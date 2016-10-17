@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WaypointScript : MonoBehaviour {
+public class WaypointScript : MonoBehaviour{
 
 	public float value;
 

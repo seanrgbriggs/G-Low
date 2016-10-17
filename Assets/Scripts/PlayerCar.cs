@@ -12,7 +12,7 @@ public class PlayerCar : MonoBehaviour {
 	bool primedForLap;
 
 	GameController gc;
-	Queue<WaypointScript> waypoints;
+	List<WaypointScript> waypoints;
 
 	// Use this for initialization
 	void Start () {
@@ -23,12 +23,9 @@ public class PlayerCar : MonoBehaviour {
 		distance = 0;
 
 		gc = GameObject.FindGameObjectWithTag ("Controller").GetComponent<GameController>();
-
-		waypoints = new Queue<WaypointScript> ();
-		WaypointScript[] wp_arr = gc.getWaypoints ();
-		foreach (WaypointScript wp in wp_arr) {
-			waypoints.Enqueue (wp);
-		}
+		 
+		waypoints = new List<WaypointScript> ();
+		waypoints.AddRange (gc.getWaypoints ());
 	}
 	
 	// Update is called once per frame
@@ -38,7 +35,7 @@ public class PlayerCar : MonoBehaviour {
             //transform.Rotate(Vector3.Cross(transform.up, hit.normal), Mathf.Min(Vector3.Angle(transform.up, hit.normal), 10 * Time.deltaTime), Space.World);
 
 		HandleRaycast ();
-
+		HandleLapping ();
 		GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
     }
 
@@ -58,8 +55,10 @@ public class PlayerCar : MonoBehaviour {
 	}
 
 	void HandleLapping(){
+		waypoints.Sort ((x, y) => x.distanceFrom(transform.position).CompareTo(y.distanceFrom(transform.position)));
 		if (!primedForLap && distance > 0.5f && distance < 0.55f) {
 			
 		}
 	}
+
 }
