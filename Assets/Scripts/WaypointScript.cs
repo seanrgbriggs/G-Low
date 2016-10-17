@@ -3,7 +3,8 @@ using System.Collections;
 
 public class WaypointScript : MonoBehaviour{
 
-	public float value;
+	public int id;
+	public float value;// { get; set;}
 
 	// Use this for initialization
 	void Start () {
