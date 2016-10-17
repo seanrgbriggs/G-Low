@@ -22,7 +22,7 @@ public class PlayerCar : MonoBehaviour {
 		num_laps = 0;
 		distance = 0;
 
-		gc = GameObject.FindGameObjectWithTag ("Controller").GetComponent<GameController>();
+		gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController>();
 		 
 		waypoints = new List<WaypointScript> ();
 		waypoints.AddRange (gc.getWaypoints ());
@@ -56,6 +56,8 @@ public class PlayerCar : MonoBehaviour {
 
 	void HandleLapping(){
 		waypoints.Sort ((x, y) => x.distanceFrom(transform.position).CompareTo(y.distanceFrom(transform.position)));
+		distance = WaypointScript.distBetween (waypoints.ToArray () [0], waypoints.ToArray () [1], transform.position);
+		print (distance);
 		if (!primedForLap && distance > 0.5f && distance < 0.55f) {
 			
 		}
