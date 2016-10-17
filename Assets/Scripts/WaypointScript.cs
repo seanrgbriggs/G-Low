@@ -7,13 +7,11 @@ public class WaypointScript : MonoBehaviour{
 
 	// Use this for initialization
 	void Start () {
-	
+	//	Destroy (GetComponent<Collider> ());
+	//	Destroy (GetComponent<Renderer> ());
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+
 
 	public float distanceFrom(Vector3 pos){
 		return (GetComponent<Collider> ().ClosestPointOnBounds (pos) - pos).magnitude;
@@ -30,7 +28,7 @@ public class WaypointScript : MonoBehaviour{
 			second = w1;
 		}
 
-		return first.value + (first.distanceFrom (pos) / first.distanceFrom (second.transform.position));
+		return first.value + (second.value - first.value) * (first.distanceFrom (pos) / (first.distanceFrom (pos) + second.distanceFrom(pos)));
 
 	}
 
