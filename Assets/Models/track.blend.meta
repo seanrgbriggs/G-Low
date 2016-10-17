@@ -8,15 +8,25 @@ ModelImporter:
     100000: BezierCurve
     100002: NurbsCircle
     100004: //RootNode
+    100006: Bottom
+    100008: BottomCurve
     400000: BezierCurve
     400002: NurbsCircle
     400004: //RootNode
+    400006: Bottom
+    400008: BottomCurve
     2300000: BezierCurve
     2300002: NurbsCircle
+    2300004: Bottom
+    2300006: BottomCurve
     3300000: BezierCurve
     3300002: NurbsCircle
+    3300004: Bottom
+    3300006: BottomCurve
     4300000: BezierCurve
     4300002: NurbsCircle
+    4300004: BottomCurve
+    4300006: Bottom
     7400000: Default Take
     9500000: //RootNode
   materials:
