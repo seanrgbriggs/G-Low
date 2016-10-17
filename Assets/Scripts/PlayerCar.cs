@@ -49,17 +49,20 @@ public class PlayerCar : MonoBehaviour {
  		//GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
     }
 
-	void HandleRaycast(){
+	void HandleRaycast() {
 		RaycastHit hit;
 		bool safe = false;
-		foreach (Transform wheel in wheels) {
+
+        GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("HLook" + id) * Time.deltaTime * 60);
+
+        foreach (Transform wheel in wheels) {
 			if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f)) {
 
 				rb.AddForceAtPosition(hit.normal * 9.8f * (2.0f - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
 
 
 				rb.AddForce(transform.forward * Input.GetAxis("Vertical"+id) * 5, ForceMode.Acceleration);
-				rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1, ForceMode.Acceleration);
+				rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1f, ForceMode.Acceleration);
 				last_safe_pos = transform.position;
 				if (!safe)
 					safe = true;
