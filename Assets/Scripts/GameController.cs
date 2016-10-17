@@ -22,11 +22,29 @@ public class GameController : MonoBehaviour {
 
 		GameObject[] waypoint_objs = GameObject.FindGameObjectsWithTag ("Waypoint");	
 		waypoints = new WaypointScript[waypoint_objs.Length];
+
+		float lap_length = 0;
 		for (int i = 0; i < waypoints.Length; i++) {
 			waypoints [i] = waypoint_objs [i].GetComponent<WaypointScript> ();
+			if (i > 0) {
+				lap_length += (waypoints [i].transform.position - waypoints [i - 1].transform.position).magnitude;
+			}
 		}
+		lap_length += (waypoints [0].transform.position - waypoints [waypoints.Length - 1].transform.position).magnitude;
 
- 
+		List<WaypointScript> sorter = new List<WaypointScript> ();
+		sorter.AddRange (waypoints);
+		sorter.Sort (((x, y) => x.id.CompareTo (y.id)));
+		waypoints = sorter.ToArray ();
+
+		for (int i = 0; i < waypoints.Length; i++) {
+			print (waypoints [i].name);
+
+			if (i > 0) {
+				waypoints[i].value = (waypoints [i].transform.position - waypoints [i - 1].transform.position).magnitude / lap_length;
+			}
+		}
+		waypoints[waypoints.Length - 1].value = (waypoints [0].transform.position - waypoints [waypoints.Length - 1].transform.position).magnitude / lap_length;
 	}
 	
 	// Update is called once per frame
