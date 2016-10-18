@@ -25,8 +25,6 @@ public class PlayerCar : MonoBehaviour {
 	GameController gc;
     List<WaypointScript> waypoints;
 
-    public GameObject[] UIPrefabs;
-
 	// Use this for initialization
 	void Awake () {
         rb = GetComponent<Rigidbody>();
@@ -55,7 +53,7 @@ public class PlayerCar : MonoBehaviour {
 
         cam.rect = camRect;
 
-        GameObject ui = Instantiate(UIPrefabs[id]);
+        GameObject ui = Instantiate(gc.UIPrefabs[id]);
         ui.transform.parent = transform;
         ui.transform.localPosition = Vector3.zero;
         ui.transform.localRotation = Quaternion.identity;

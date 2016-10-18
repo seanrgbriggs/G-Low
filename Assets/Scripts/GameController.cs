@@ -8,7 +8,9 @@ public class GameController : MonoBehaviour {
 
 	WaypointScript[] waypoints;
 
-	public int laps_max;
+    public GameObject[] UIPrefabs;
+
+    public int laps_max;
 
     // Use this for initialization
     void Start()
