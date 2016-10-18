@@ -61,6 +61,11 @@ public class GameController : MonoBehaviour {
         return players.IndexOf(p);
     }
 
+    public List<PlayerCar> getPlayers()
+    {
+        return players;
+    }
+
     public int getNumPlayers()
     {
         return players.Count;
