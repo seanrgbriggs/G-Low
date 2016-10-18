@@ -56,7 +56,7 @@ public class UFOAbilities : PlayerAbilities {
     }
 
     public List<PlayerCar> GetPlayersWithin(float dist) {
-        List<PlayerCar> players = new List<PlayerCar>();
+        List<PlayerCar> players = gc.getPlayers();
         players.Remove(player);
 
         foreach(PlayerCar p in players)
