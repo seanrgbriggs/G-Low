@@ -13,27 +13,17 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Awake()
     {
-        GameObject[] player_objs = GameObject.FindGameObjectsWithTag("Player");
-
-        players = new List<PlayerCar>();
-        for (int i = 0; i < player_objs.Length; i++)
-        {
-            players.Add(player_objs[i].GetComponent<PlayerCar>());
-        }
+        players = new List<PlayerCar>(FindObjectsOfType<PlayerCar>());
 
 
-        GameObject[] waypoint_objs = GameObject.FindGameObjectsWithTag("Waypoint");
-        waypoints = new WaypointScript[waypoint_objs.Length];
+        waypoints = FindObjectsOfType<WaypointScript>();
 
         float lap_length = 0;
-        for (int i = 0; i < waypoints.Length; i++)
+        for (int i = 1; i < waypoints.Length; i++)
         {
-            waypoints[i] = waypoint_objs[i].GetComponent<WaypointScript>();
-            if (i > 0)
-            {
-                lap_length += (waypoints[i].transform.position - waypoints[i - 1].transform.position).magnitude;
-            }
+            lap_length += (waypoints[i].transform.position - waypoints[i - 1].transform.position).magnitude;
         }
+
         lap_length += (waypoints[0].transform.position - waypoints[waypoints.Length - 1].transform.position).magnitude;
 
         List<WaypointScript> sorter = new List<WaypointScript>();
@@ -50,6 +40,10 @@ public class GameController : MonoBehaviour {
         }
         waypoints[waypoints.Length - 1].value = (waypoints[0].transform.position - waypoints[waypoints.Length - 1].transform.position).magnitude / lap_length;
 
+        foreach (PlayerCar player in players)
+        {
+            player.AssignStuffAndShit();
+        }
     }
 
     // Update is called once per frame
@@ -65,6 +59,11 @@ public class GameController : MonoBehaviour {
     public int getPosition(PlayerCar p)
     {
         return players.IndexOf(p);
+    }
+
+    public int getNumPlayers()
+    {
+        return players.Count;
     }
 
 }

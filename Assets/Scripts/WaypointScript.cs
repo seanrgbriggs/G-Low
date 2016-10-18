@@ -3,13 +3,28 @@ using System.Collections;
 
 public class WaypointScript : MonoBehaviour{
 
-	public int id;
-	public float value;// { get; set;}
+	public int id { get; set; }
+	public float value { get; set;}
 
 	// Use this for initialization
 	void Start () {
-	//	Destroy (GetComponent<Collider> ());
-	//	Destroy (GetComponent<Renderer> ());
+        //	Destroy (GetComponent<Collider> ());
+        //	Destroy (GetComponent<Renderer> ());
+        MeshRenderer mesh = GetComponent<MeshRenderer>();
+        if (mesh != null)
+        {
+            mesh.enabled = false;
+        }
+
+        if (name.EndsWith(")"))
+        {
+            int i = name.IndexOf("(");
+            int j = name.IndexOf(")");
+            id = System.Convert.ToInt32(name.Substring(i + 1, j - i - 1));
+        } else
+        {
+            id = 0;
+        }
 	}
 
 
