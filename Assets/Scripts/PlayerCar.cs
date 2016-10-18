@@ -67,6 +67,7 @@ public class PlayerCar : MonoBehaviour {
             //transform.Rotate(Vector3.Cross(transform.up, hit.normal), Mathf.Min(Vector3.Angle(transform.up, hit.normal), 10 * Time.deltaTime), Space.World);
 
 		HandleRaycast ();
+        HandleDimming();
 		HandleLapping ();
  		//GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
     }
@@ -132,7 +133,11 @@ public class PlayerCar : MonoBehaviour {
 
 	}
 
-	void HandleLapping(){
+    void HandleDimming()
+    {
+        GetComponent<Renderer>().material.color = Color.white * cur_off_time / off_time;
+    }
+    void HandleLapping(){
 
         waypoints.Sort((x, y) => x.distanceFrom(transform.position).CompareTo(y.distanceFrom(transform.position)));
 
