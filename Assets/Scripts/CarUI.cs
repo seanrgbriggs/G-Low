@@ -20,6 +20,6 @@ public class CarUI : MonoBehaviour {
 	void Update () {
         spedometer.text = (int)car.GetComponent<Rigidbody>().velocity.magnitude + " MPH";
         place.text = FindObjectOfType<GameController>().getPosition(car) + "";
-        dist.text = car.getDistance() + "";
+        //dist.text = car.getDistance() + "";
     }
 }
