@@ -21,8 +21,7 @@ public class PlayerCar : MonoBehaviour {
     private const float off_time = 1.5f; //time to return when off-stage;
 	private float cur_off_time = 0.0f;
 
-	float ab_cooldown;
-	float ult_cooldown;
+    PlayerAbilities abil;
 
 	GameController gc;
     List<WaypointScript> waypoints;
@@ -30,6 +29,7 @@ public class PlayerCar : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
+        abil = GetComponent<PlayerAbilities>();
 
 		primedForLap = false;
 		num_laps = 0;
@@ -87,9 +87,12 @@ public class PlayerCar : MonoBehaviour {
                     {
                         transform.position = safe_pos_history_b.Pop();
                     }
-                    else
+                    else if(safe_pos_history.Count > 0)
                     {
                         transform.position = safe_pos_history.Pop();
+                    }else
+                    {
+                        transform.position += rb.velocity;
                     }
                 }
                 transform.up = hit.normal;
@@ -122,11 +125,7 @@ public class PlayerCar : MonoBehaviour {
 			num_laps++;
 			primedForLap = false;
 		}
-
-        if (id == 0)
-        {
-            print(waypoints[0].id + "-" + waypoints[1].id+": "+distance);
-        }
+ 
 	}
 
 
@@ -142,11 +141,8 @@ public class PlayerCar : MonoBehaviour {
 		return num_laps;
 	}
 
-	public float getAbilCooldown(){
-		return ab_cooldown;
+	public PlayerAbilities getAbilities(){
+		return abil;
 	}
 
-	public float getUltCooldown(){
-		return ult_cooldown;
-	}
 }

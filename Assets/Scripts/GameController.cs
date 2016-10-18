@@ -54,12 +54,17 @@ public class GameController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        players.Sort (((x, y) => x.getDistance ().CompareTo (y.getDistance ())));
+        players.Sort (((x, y) => (x.getLaps() + x.getDistance ()).CompareTo (y.getLaps() + y.getDistance ())));
 	}
 
 	public WaypointScript[] getWaypoints(){
 
         return (WaypointScript[])waypoints.Clone();
 	}
+
+    public int getPosition(PlayerCar p)
+    {
+        return players.IndexOf(p);
+    }
 
 }
