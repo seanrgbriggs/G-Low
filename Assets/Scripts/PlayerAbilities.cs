@@ -1,11 +1,62 @@
-﻿
-public interface PlayerAbilities{
+﻿using UnityEngine;
 
-    void UseAbility();
+public abstract class PlayerAbilities : MonoBehaviour {
 
-    void UseUltimate();
+    public float abil_max;
+    public float ult_max;
 
-    void GetAbilityCooldown();
+    protected float abil_cd;
+    protected float ult_cd;
 
-    void GetUltimateCooldown();
+    protected PlayerCar player;
+    protected int id;
+
+    protected virtual void Start()
+    {
+        abil_cd = 0;
+        ult_cd = 0;
+
+        player = GetComponent<PlayerCar>();
+        id = player.id;
+    }
+
+    protected virtual void Update()
+    {
+        if (Input.GetButtonDown("Ability" + id))
+        {
+            UseAbility();
+        } else if (Input.GetButtonDown("Ultimate" + id))
+        {
+            UseUltimate();
+        }
+
+        if (abil_cd < abil_max)
+        {
+            abil_cd += Time.deltaTime;
+        }
+        if (ult_cd < ult_max)
+        {
+            ult_cd += Time.deltaTime;
+        }
+    }
+
+    public virtual bool UseAbility()
+    {
+        return (abil_cd >= 1);
+    }
+
+    public virtual bool UseUltimate()
+    {
+        return (ult_cd >= 1);
+    }
+
+    public float GetAbilityCooldown()
+    {
+        return abil_cd / abil_max;
+    }
+
+    public float GetUltimateCooldown()
+    {
+        return ult_cd / ult_max;
+    }
 }
