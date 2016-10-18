@@ -2,6 +2,9 @@
 
 public abstract class PlayerAbilities : MonoBehaviour {
 
+    public float abil_max;
+    public float ult_max;
+
     protected float abil_cd;
     protected float ult_cd;
 
@@ -26,6 +29,15 @@ public abstract class PlayerAbilities : MonoBehaviour {
         {
             UseUltimate();
         }
+
+        if (abil_cd < abil_max)
+        {
+            abil_cd += Time.deltaTime;
+        }
+        if (ult_cd < ult_max)
+        {
+            ult_cd += Time.deltaTime;
+        }
     }
 
     public virtual bool UseAbility()
@@ -40,11 +52,11 @@ public abstract class PlayerAbilities : MonoBehaviour {
 
     public float GetAbilityCooldown()
     {
-        return abil_cd;
+        return abil_cd / abil_max;
     }
 
     public float GetUltimateCooldown()
     {
-        return ult_cd;
+        return ult_cd / ult_max;
     }
 }
