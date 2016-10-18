@@ -11,34 +11,32 @@ public class GameController : MonoBehaviour {
 	public int laps_max;
 
     // Use this for initialization
-    void Awake()
+    void Start()
     {
         players = new List<PlayerCar>(FindObjectsOfType<PlayerCar>());
 
 
         waypoints = FindObjectsOfType<WaypointScript>();
 
+
+        List<WaypointScript> sorter = new List<WaypointScript>();
+        sorter.AddRange(waypoints);
+        sorter.Sort(((x, y) => x.id- y.id));
+        waypoints = sorter.ToArray();
+
+
         float lap_length = 0;
         for (int i = 1; i < waypoints.Length; i++)
         {
-            lap_length += (waypoints[i].transform.position - waypoints[i - 1].transform.position).magnitude;
+            lap_length += Vector3.Distance(waypoints[i].transform.position, waypoints[i - 1].transform.position);
         }
 
         lap_length += (waypoints[0].transform.position - waypoints[waypoints.Length - 1].transform.position).magnitude;
 
-        List<WaypointScript> sorter = new List<WaypointScript>();
-        sorter.AddRange(waypoints);
-        sorter.Sort(((x, y) => x.id.CompareTo(y.id)));
-        waypoints = sorter.ToArray();
-
-        for (int i = 0; i < waypoints.Length; i++)
+        for (int i = 1; i < waypoints.Length; i++)
         {
-            if (i > 0)
-            {
-                waypoints[i].value = (waypoints[i].transform.position - waypoints[i - 1].transform.position).magnitude / lap_length;
-            }
+            waypoints[i].value = waypoints[i - 1].value + Vector3.Distance(waypoints[i].transform.position, waypoints[i - 1].transform.position) / lap_length;
         }
-        waypoints[waypoints.Length - 1].value = (waypoints[0].transform.position - waypoints[waypoints.Length - 1].transform.position).magnitude / lap_length;
 
         foreach (PlayerCar player in players)
         {
@@ -48,7 +46,7 @@ public class GameController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        players.Sort (((x, y) => (x.getLaps() + x.getDistance ()).CompareTo (y.getLaps() + y.getDistance ())));
+        players.Sort (((x, y) => -(x.getLaps() + x.getDistance ()).CompareTo (y.getLaps() + y.getDistance ())));
 	}
 
 	public WaypointScript[] getWaypoints(){

@@ -3,17 +3,17 @@ using System.Collections;
 
 public class WaypointScript : MonoBehaviour{
 
-	public int id { get; set; }
-	public float value { get; set;}
+    public int id;
+    public float value;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         //	Destroy (GetComponent<Collider> ());
         //	Destroy (GetComponent<Renderer> ());
         MeshRenderer mesh = GetComponent<MeshRenderer>();
         if (mesh != null)
         {
-            mesh.enabled = false;
+            //mesh.enabled = false;
         }
 
         if (name.EndsWith(")"))

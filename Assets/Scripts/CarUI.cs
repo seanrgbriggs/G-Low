@@ -6,6 +6,8 @@ public class CarUI : MonoBehaviour {
     public Image abilityMeter;
     public Image ultMeter;
     public Text spedometer;
+    public Text place;
+    public Text dist;
 
     private PlayerCar car;
 
@@ -17,5 +19,7 @@ public class CarUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         spedometer.text = (int)car.GetComponent<Rigidbody>().velocity.magnitude + " MPH";
-	}
+        place.text = FindObjectOfType<GameController>().getPosition(car) + "";
+        dist.text = car.getDistance() + "";
+    }
 }
