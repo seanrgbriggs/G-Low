@@ -42,12 +42,22 @@ public abstract class PlayerAbilities : MonoBehaviour {
 
     public virtual bool UseAbility()
     {
-        return (abil_cd >= 1);
+        bool u = (abil_cd >= abil_max);
+        if (u)
+        {
+            abil_cd = 0;
+        }
+        return u;
     }
 
     public virtual bool UseUltimate()
     {
-        return (ult_cd >= 1);
+        bool u = (ult_cd >= ult_max);
+        if (u)
+        {
+            ult_cd = 0;
+        }
+        return u;
     }
 
     public float GetAbilityCooldown()

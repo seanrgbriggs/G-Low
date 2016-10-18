@@ -21,5 +21,7 @@ public class CarUI : MonoBehaviour {
         spedometer.text = (int)car.GetComponent<Rigidbody>().velocity.magnitude + " MPH";
         place.text = FindObjectOfType<GameController>().getPosition(car) + "";
         //dist.text = car.getDistance() + "";
+        abilityMeter.fillAmount = car.GetComponent<PlayerAbilities>().GetAbilityCooldown();
+        ultMeter.fillAmount = car.GetComponent<PlayerAbilities>().GetUltimateCooldown();
     }
 }

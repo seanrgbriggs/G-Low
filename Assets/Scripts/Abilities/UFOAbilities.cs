@@ -38,7 +38,7 @@ public class UFOAbilities : PlayerAbilities {
 
     public override bool UseUltimate()
     {
-        if (!base.UseAbility())
+        if (!base.UseUltimate())
         {
             return false;
         }
@@ -57,7 +57,6 @@ public class UFOAbilities : PlayerAbilities {
 
     public List<PlayerCar> GetPlayersWithin(float dist) {
         List<PlayerCar> players = gc.getPlayers();
-        players.Remove(player);
 
         foreach(PlayerCar p in players)
         {

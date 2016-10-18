@@ -58,11 +58,11 @@ public class HondaAbilities : PlayerAbilities {
 
     public override bool UseUltimate()
     {
-        if (!base.UseAbility())
+        if (!base.UseUltimate())
         {
             return false;
         }
-
+        
         rb.AddTorque(transform.up * spin_power, ForceMode.Acceleration);
         return true;
     }
