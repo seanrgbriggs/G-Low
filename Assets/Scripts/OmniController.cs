@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class OmniController : MonoBehaviour {
+public class OmniController : MonoBehaviour, Receiver {
 
     public int max_players = 4;
     public string character_select;
@@ -38,5 +38,8 @@ public class OmniController : MonoBehaviour {
         level = default_level;
     }
 
+	public void Receive(int id, Object obj, string label){
+		
+	}
 
 }
