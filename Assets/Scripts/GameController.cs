@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour {
 
 	WaypointScript[] waypoints;
 
+    OmniController omni;
+
     public GameObject[] UIPrefabs;
 
     public int laps_max;
@@ -15,6 +17,7 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        omni = FindObjectOfType<OmniController>();
         players = new List<PlayerCar>(FindObjectsOfType<PlayerCar>());
 
 
@@ -42,7 +45,7 @@ public class GameController : MonoBehaviour {
 
         foreach (PlayerCar player in players)
         {
-            player.AssignStuffAndShit();
+            player.ReadyFields();
         }
     }
 
