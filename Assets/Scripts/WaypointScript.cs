@@ -28,7 +28,6 @@ public class WaypointScript : MonoBehaviour{
 	}
 
 
-
 	public float distanceFrom(Vector3 pos){
 		return (GetComponent<Collider> ().ClosestPointOnBounds (pos) - pos).magnitude;
 	}

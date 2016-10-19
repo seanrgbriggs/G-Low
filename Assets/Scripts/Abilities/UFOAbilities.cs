@@ -24,16 +24,8 @@ public class UFOAbilities : PlayerAbilities {
             return false;
         }
 
-        List<PlayerCar> players = GetPlayersWithin(magnetize_range);
+        return forceOnPlayersWithin(-magnetize_force);
 
-        bool successful = players.Count > 0;
-
-        foreach(PlayerCar p in players)
-        {
-            p.GetComponent<Rigidbody>().AddForce((transform.position - p.transform.position).normalized * magnetize_force);
-        }
-
-        return successful;
     }
 
     public override bool UseUltimate()
@@ -43,30 +35,19 @@ public class UFOAbilities : PlayerAbilities {
             return false;
         }
 
-        List<PlayerCar> players = GetPlayersWithin(pulse_range);
-
-        bool successful = players.Count > 0;
-
-        foreach (PlayerCar p in players)
-        {
-            p.GetComponent<Rigidbody>().AddForce((p.transform.position - transform.position).normalized * pulse_force);
-        }
-
-        return successful; 
+        return forceOnPlayersWithin(pulse_force); 
     }
 
-    public List<PlayerCar> GetPlayersWithin(float dist) {
-        List<PlayerCar> players = gc.getPlayers();
+    public bool forceOnPlayersWithin(float magnitude) {
+        bool successful = false;
 
-        foreach(PlayerCar p in players)
+        foreach (PlayerCar p in gc.getPlayers())
         {
-            if((transform.position - p.transform.position).magnitude > dist)
-            {
-                players.Remove(p);
-            }
+            p.GetComponent<Rigidbody>().AddForce((p.transform.position - transform.position).normalized * magnitude);
+            successful = true;
         }
 
-        return players;
+        return successful;
     }
     
 }
