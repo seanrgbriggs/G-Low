@@ -144,13 +144,14 @@ public class PlayerCar : MonoBehaviour {
     void HandleDimming()
     {
         float brightness;
+        float max = 50 * gc.playerSpeedMultiplier;
         if (onTrack) {
-            brightness = Mathf.Max((rb.velocity.magnitude - 50) / 10, 1);
+            brightness = Mathf.Max((rb.velocity.magnitude - max) / 10, 1);
         } else {
-            brightness = rb.velocity.magnitude / 50;
+            brightness = rb.velocity.magnitude / max;
         }
-
-        GetComponent<Renderer>().material.SetColor("_EmissionColor", base_col * brightness);// (1 - cur_off_time / off_time));
+        Material m = GetComponent<Renderer>().material;
+        m.SetColor("_EmissionColor", base_col * brightness);// (1 - cur_off_time / off_time));
     }
 
     void HandleLapping(){
