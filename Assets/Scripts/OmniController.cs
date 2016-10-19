@@ -29,7 +29,7 @@ public class OmniController : Receiver {
                 continue;
             }
             GameObject player = (GameObject) Instantiate(characters[i++], spawnpoint.transform.position, spawnpoint.transform.rotation);
-            
+			player.GetComponent<PlayerCar> ().id = i - 1;
         }
     }
 
