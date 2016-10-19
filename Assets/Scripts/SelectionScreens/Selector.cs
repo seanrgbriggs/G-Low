@@ -6,25 +6,31 @@ public class Selector : MonoBehaviour {
 
 	public Selectable[] menu;
 	public Receiver rec;
+	public string label = "";
 
+	public int gridAssign; //Assign nodes in a grid pattern, assuming the provided number of rows.
 	public bool doPhysicalAssignment; //Assign nearby nodes by world location
-	public bool vertical; //Otherwise, indicate if the menu is horizontal or vertical
+
+	public bool disallowHorizontal;
+	public bool disallowVertical;
 
 	public const float max_cooldown = 0.1f;
-	public int num_players;
 
-	List<float> cursor_cooldowns;
+	public List<Cursor> cursors;
 
 	// Use this for initialization
 	void Start () {
 
 		SetupMenu ();
-
-		cursor_cooldowns = new List<float> (num_players);
-		for (int i = 0; i < cursor_cooldowns.Count; i++) {
-			cursor_cooldowns [i] = -1;
+		foreach (Selectable s in menu) {
+			s.parent = this;
 		}
-	
+
+		foreach (Cursor c in cursors) {
+			c.id = cursors.IndexOf (c);
+			menu [0].registerCursor(c);
+		}
+
 	}
 
 	void SetupMenu(){
@@ -35,18 +41,35 @@ public class Selector : MonoBehaviour {
 				menu[i].up = trace(menu[i], Vector2.up);
 				menu[i].down = trace(menu[i], Vector2.down);
 			}
-			return;
 		}else{
-			if(vertical){
-				for (int i = 0; i < menu.Length; i++) {
-					menu [i].up = menu [(i - 1) % menu.Length];
-					menu [i].down = menu [(i + 1) % menu.Length];
+
+			int row_offset = (gridAssign > 1) ? menu.Length/ gridAssign : 0; 
+
+			for (int i = 0; i < menu.Length; i++) {
+				menu [i].left = menu [(i + menu.Length - 1) % menu.Length];
+				menu [i].right = menu [(i + menu.Length + 1) % menu.Length];
+
+				if (gridAssign > 1) {
+					menu [i].up = menu [(i + menu.Length - row_offset) % menu.Length];
+					menu [i].down = menu [(i + menu.Length + row_offset) % menu.Length];
+				} else {
+					menu [i].up = menu [i].left; 
+					menu [i].down = menu [i].right;
 				}
-			}else{
-				for (int i = 0; i < menu.Length; i++) {
-					menu [i].left = menu [(i - 1) % menu.Length];
-					menu [i].right = menu [(i + 1) % menu.Length];
-				}
+		
+			}
+		}
+
+		if (disallowHorizontal) {
+			for (int i = 0; i < menu.Length; i++) {
+				menu [i].left = menu [i];
+				menu [i].right = menu [i];
+			}
+		}
+		if (disallowVertical) {
+			for (int i = 0; i < menu.Length; i++) {
+				menu [i].up = menu [i];
+				menu [i].down = menu [i];
 			}
 		}
 	}
@@ -84,42 +107,29 @@ public class Selector : MonoBehaviour {
 		HandleInput ();
 	}
 
+
 	void HandleInput(){
 		
-		for (int i = 0; i < cursor_cooldowns.Count; i++) {
+		for (int i = 0; i < cursors.Count; i++) {
+			if (cursors [i].cooldown <= 0) {
 
-			if (cursor_cooldowns [i] > 0) {
-				cursor_cooldowns [i] -= Time.deltaTime;
-			} else {
-				if (Input.GetButtonDown ("" + i)) {
-					
-				}else if (Input.GetAxis ("Horizontal" + i) > 0) {
-					for (int j = 0; j < menu.Length; j++) {
-						if (menu [j].PassRight (i)) {
-							break;
-						}
-					}
-					break;
+				bool button_pushed = true;
+				if (Input.GetButtonDown ("Ultimate" + i)) {
+					rec.Receive (i, cursors [i].GetPointer().contents, label);
+				} else if (Input.GetAxis ("Horizontal" + i) > 0) {
+					cursors [i].GetPointer().PassRight (i);
 				} else if (Input.GetAxis ("Horizontal" + i) < 0) {
-					for (int j = 0; j < menu.Length; j++) {
-						if (menu [j].PassLeft (i)) {
-							break;
-						}
-					}
-					break;
+					cursors [i].GetPointer().PassLeft (i);
 				} else if (Input.GetAxis ("Vertical" + i) > 0) {
-					for (int j = 0; j < menu.Length; j++) {
-						if (menu [j].PassUp (i)) {
-							break;
-						}
-					}
-					break;
-				}else if(Input.GetAxis("Vertical"+i) < 0){
-					for (int j = 0; j < menu.Length; j++) {
-						if (menu [j].PassDown (i)) {
-							break;
-						}
-					}
+					cursors [i].GetPointer().PassUp (i);
+				} else if (Input.GetAxis ("Vertical" + i) < 0) {
+					cursors [i].GetPointer().PassDown (i);
+				} else {
+					button_pushed = false;
+				}
+
+				if (button_pushed) {
+					cursors [i].cooldown = max_cooldown;
 				}
 			}
 

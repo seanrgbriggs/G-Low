@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class OmniController : MonoBehaviour, Receiver {
+public class OmniController : Receiver {
 
     public int max_players = 4;
     public string character_select;
@@ -38,8 +38,25 @@ public class OmniController : MonoBehaviour, Receiver {
         level = default_level;
     }
 
-	public void Receive(int id, Object obj, string label){
-		
+	public override void Receive(int id, Object obj, string label){
+		print (label + ": " + obj.name);
+
+		if (label == "character") {
+
+			characters [id] = ((GameObject) obj);
+
+			GameObject[] models = GameObject.FindGameObjectsWithTag ("Player");
+			System.Array.Sort (models, ((x, y) => x.name.CompareTo (y.name)));
+	
+			models [id].GetComponent<MeshFilter> ().mesh = characters[id].GetComponent<MeshFilter> ().sharedMesh;
+			models [id].GetComponent<MeshRenderer> ().material = characters [id].GetComponent<MeshRenderer> ().sharedMaterial;
+			
+		} else if (label == "map") {
+
+			level = obj.name;
+			StartGame ();
+
+		}
 	}
 
 }

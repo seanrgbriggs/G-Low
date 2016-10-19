@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-public interface Receiver{
+public abstract class Receiver : MonoBehaviour{
 
-	void Receive(int id, Object toRecieve, string label = "");
+	public abstract void Receive(int id, Object toRecieve, string label = "");
 
 }

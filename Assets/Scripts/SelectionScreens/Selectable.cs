@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class Selectable : MonoBehaviour {
 
 	public Object contents;
-	public string label = "";
 
 	public Selectable left { set; get; } 
 	public Selectable right{ set; get; }
@@ -13,10 +12,16 @@ public class Selectable : MonoBehaviour {
 	public Selectable up {set; get;}
 	public Selectable down { set; get; }
 
+	public Selector parent { set; get; }
 	List<int> cursors;
 
-	void Start(){
+	void Awake(){
 		cursors = new List<int> ();
+	}
+
+	public void registerCursor(Cursor c){
+		c.SetPointer (this);
+		cursors.Add (c.id);
 	}
 
 	public bool isSelected(){
@@ -27,40 +32,30 @@ public class Selectable : MonoBehaviour {
 		return cursors.IndexOf (i) >= 0;
 	}
 
-	public bool PassLeft(int i){
+	public bool Pass(int i, Selectable sel){
 		if (!isSelectedBy (i)) {
 			return false;
 		}
 		cursors.Remove (i);
-		left.cursors.Add (i);
+		sel.cursors.Add (i);
+		parent.cursors [i].SetPointer (sel);
 		return true;
+	}
+
+	public bool PassLeft(int i){
+		return Pass (i, left);
 	}
 
 	public bool PassRight(int i){
-		if (!isSelectedBy (i)) {
-			return false;
-		}
-		cursors.Remove (i);
-		right.cursors.Add (i);
-		return true;
+		return Pass (i, right);
 	}
 
 	public bool PassUp(int i){
-		if (!isSelectedBy (i)) {
-			return false;
-		}
-		cursors.Remove (i);
-		up.cursors.Add (i);
-		return true;
+		return Pass (i, up);
 	}
 
 	public bool PassDown(int i){
-		if (!isSelectedBy (i)) {
-			return false;
-		}
-		cursors.Remove (i);
-		down.cursors.Add (i);
-		return true;
+		return Pass (i, down);
 	}
 }
 
