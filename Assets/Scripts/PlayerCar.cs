@@ -26,6 +26,8 @@ public class PlayerCar : MonoBehaviour {
     Color base_col;
     public float hoverDist = 3.0f;
 
+    Vector3 camAngles;
+
     // Use this for initialization
     void Awake () {
         rb = GetComponent<Rigidbody>();
@@ -75,19 +77,39 @@ public class PlayerCar : MonoBehaviour {
 	void HandleRaycast() {
 		RaycastHit hit;
 
-        GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("HLook" + id) * Time.deltaTime * 60);
+        Camera cam = GetComponentInChildren<Camera>();
+        
+        cam.transform.eulerAngles = camAngles;
+        Vector3 v = cam.transform.localEulerAngles;
+        v.x = 0;
+        v.y += Input.GetAxis("Horizontal" + id) * Time.deltaTime * 120;
+        v.z = 0;
+        cam.transform.localEulerAngles = v;
+        cam.transform.position = transform.position - cam.transform.forward * 10;
+        v = cam.transform.localPosition;
+        v.y = 3.25f;
+        cam.transform.localPosition = v;
+
+        camAngles = cam.transform.eulerAngles;
 
         bool align = true;
         foreach (Transform wheel in wheels) {
 			if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f)) {
 
                 
-                rb.AddForce(transform.forward * Input.GetAxis("Vertical"+id) * 5, ForceMode.Acceleration);
-				rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1f, ForceMode.Acceleration);
+                rb.AddForce(transform.forward * Input.GetAxis("HLook"+id) * 10, ForceMode.Acceleration);
+                //rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1f, ForceMode.Acceleration);
 
-			} else
+                float h = Vector3.Angle(transform.forward, cam.transform.forward) * 0.05f * Mathf.Abs(Input.GetAxis("HLook"+id));
+                if (h > 2) {
+                    h = 2;
+                }
+
+                rb.AddTorque(Vector3.Cross(transform.forward, cam.transform.forward).normalized * h, ForceMode.Acceleration);
+
+            } else
             {
-                align = false;
+                align = true;
             }
 		}
 
