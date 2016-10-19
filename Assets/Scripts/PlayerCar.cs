@@ -28,6 +28,10 @@ public class PlayerCar : MonoBehaviour {
 
     Vector3 camAngles;
 
+    public float handBrakePower = 1.0f;
+    private float drag;
+    private bool onTrack;
+
     // Use this for initialization
     void Awake () {
         rb = GetComponent<Rigidbody>();
@@ -38,6 +42,7 @@ public class PlayerCar : MonoBehaviour {
 		distance = 0;
 
         base_col = GetComponent<Renderer>().material.GetColor("_EmissionColor");
+        drag = rb.drag;
     }
 
     public void ReadyFields()
@@ -91,39 +96,31 @@ public class PlayerCar : MonoBehaviour {
         cam.transform.localPosition = v;
 
         camAngles = cam.transform.eulerAngles;
-
-        bool align = true;
+        
         foreach (Transform wheel in wheels) {
+            onTrack = false;
 			if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f)) {
+                onTrack = true;
+                rb.AddForceAtPosition(hit.normal * 9.8f * (hoverDist - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
 
-                
-                rb.AddForce(transform.forward * Input.GetAxis("HLook"+id) * 10, ForceMode.Acceleration);
-                //rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1f, ForceMode.Acceleration);
 
-                float h = Vector3.Angle(transform.forward, cam.transform.forward) * 0.05f * Mathf.Abs(Input.GetAxis("HLook"+id));
-                if (h > 2) {
-                    h = 2;
+                if (Input.GetButton("Brake"+id)) {
+                    rb.drag = handBrakePower;
+                } else {
+                    rb.drag = drag;
+                    rb.AddForce(transform.forward * Input.GetAxis("HLook" + id) * 5 * gc.playerSpeedMultiplier, ForceMode.Acceleration);
+                    //rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1f, ForceMode.Acceleration);
+
+                    float h = Vector3.Angle(transform.forward, cam.transform.forward) * 0.05f * Mathf.Abs(Input.GetAxis("HLook" + id));
+                    if (h > 2) {
+                        h = 2;
+                    }
+
+                    rb.AddTorque(Vector3.Cross(transform.forward, cam.transform.forward).normalized * h, ForceMode.Acceleration);
                 }
 
-                rb.AddTorque(Vector3.Cross(transform.forward, cam.transform.forward).normalized * h, ForceMode.Acceleration);
-
-            } else
-            {
-                align = true;
             }
 		}
-
-        if (align)
-        {
-            foreach(Transform wheel in wheels)
-            {
-
-                if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f))
-                {
-                    rb.AddForceAtPosition(hit.normal * 9.8f * (hoverDist - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
-                }
-            }
-        }
 
 		if (Input.GetButton("Sudoku"+id)) {
             if (cur_off_time < off_time) {
@@ -146,11 +143,11 @@ public class PlayerCar : MonoBehaviour {
 
     void HandleDimming()
     {
-        float brightness = rb.velocity.magnitude / 30;
-
-        if(brightness < 1 && Physics.Raycast(transform.position, -transform.up, 20.0f))
-        {
-            brightness = 1;
+        float brightness;
+        if (onTrack) {
+            brightness = Mathf.Max((rb.velocity.magnitude - 50) / 10, 1);
+        } else {
+            brightness = rb.velocity.magnitude / 50;
         }
 
         GetComponent<Renderer>().material.SetColor("_EmissionColor", base_col * brightness);// (1 - cur_off_time / off_time));

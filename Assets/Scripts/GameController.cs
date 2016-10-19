@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
     public GameObject[] UIPrefabs;
 
     public int laps_max;
+    public float playerSpeedMultiplier = 1.0f;
 
     // Use this for initialization
     void Start()
