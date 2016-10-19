@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RotateMan : MonoBehaviour {
+public class SpinMeRightRound : MonoBehaviour {
     public Vector3 r;
 
 	// Use this for initialization
