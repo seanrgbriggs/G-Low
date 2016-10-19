@@ -24,6 +24,7 @@ public class PlayerCar : MonoBehaviour {
     List<WaypointScript> waypoints;
 
     Color base_col;
+    public float hoverDist = 3.0f;
 
     // Use this for initialization
     void Awake () {
@@ -97,7 +98,7 @@ public class PlayerCar : MonoBehaviour {
 
                 if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f))
                 {
-                    rb.AddForceAtPosition(hit.normal * 9.8f * (2.0f - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
+                    rb.AddForceAtPosition(hit.normal * 9.8f * (hoverDist - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
                 }
             }
         }
