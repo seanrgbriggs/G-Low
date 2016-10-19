@@ -76,32 +76,40 @@ public class PlayerCar : MonoBehaviour {
 
         GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("HLook" + id) * Time.deltaTime * 60);
 
+        bool align = true;
         foreach (Transform wheel in wheels) {
 			if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f)) {
-				rb.AddForceAtPosition(hit.normal * 9.8f * (2.0f - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
 
                 
                 rb.AddForce(transform.forward * Input.GetAxis("Vertical"+id) * 5, ForceMode.Acceleration);
 				rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1f, ForceMode.Acceleration);
 
-			}
+			} else
+            {
+                align = false;
+            }
 		}
+
+        if (align)
+        {
+            foreach(Transform wheel in wheels)
+            {
+
+                if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f))
+                {
+                    rb.AddForceAtPosition(hit.normal * 9.8f * (2.0f - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
+                }
+            }
+        }
 
 		if (Input.GetButton("Sudoku"+id)) {
             if (cur_off_time < off_time) {
                 cur_off_time += Time.deltaTime;
             } else {
-                rb.velocity = -rb.velocity;
-                RaycastHit hit2;
-
-                    if (Physics.Raycast(transform.position, -transform.up, out hit2, 20.0f))
-                    {
-                        transform.up = hit2.normal;
-                    }else
-                    {
-                        transform.position = furthest_waypoint.transform.position+ furthest_waypoint.transform.up * 4;
-                        transform.LookAt(furthest_waypoint.transform.position + furthest_waypoint.transform.forward, furthest_waypoint.transform.up);
-                    }
+                rb.velocity = Vector3.zero;
+                transform.position = furthest_waypoint.transform.position;
+                transform.LookAt(furthest_waypoint.transform.position + furthest_waypoint.transform.forward, furthest_waypoint.transform.up);
+                   
 
                 cur_off_time = 0;
                 print(transform.up);
