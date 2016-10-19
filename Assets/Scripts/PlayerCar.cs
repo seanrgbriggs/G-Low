@@ -87,7 +87,7 @@ public class PlayerCar : MonoBehaviour {
 			}
 		}
 
-		if (false) {// Input.GetButton("Sudoku"+id)) {
+		if (Input.GetButton("Sudoku"+id)) {
             if (cur_off_time < off_time) {
                 cur_off_time += Time.deltaTime;
             } else {
@@ -115,7 +115,14 @@ public class PlayerCar : MonoBehaviour {
 
     void HandleDimming()
     {
-        GetComponent<Renderer>().material.SetColor("_EmissionColor", base_col * (1 - cur_off_time / off_time));
+        float brightness = rb.velocity.magnitude / 30;
+
+        if(brightness < 1 && Physics.Raycast(transform.position, -transform.up, 20.0f))
+        {
+            brightness = 1;
+        }
+
+        GetComponent<Renderer>().material.SetColor("_EmissionColor", base_col * brightness);// (1 - cur_off_time / off_time));
     }
 
     void HandleLapping(){
