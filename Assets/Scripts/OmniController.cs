@@ -6,20 +6,18 @@ public class OmniController : MonoBehaviour {
 
     public int max_players = 4;
     public string character_select;
+    public string default_level;
 
-    string level;
-    GameObject[] characters;
+    public string level { get; set; }
+    public GameObject[] characters { get; set; }
 
 	// Use this for initialization
 	void Start () {
-        level = "Menu";
+        level = default_level;
         characters = new GameObject[max_players];
         DontDestroyOnLoad(gameObject);
     }
 	
-	// Update is called once per frame
-	void Update () {
-	}
 
     public void StartGame() {
         SceneManager.LoadScene(level);
@@ -37,6 +35,8 @@ public class OmniController : MonoBehaviour {
 
     public void EndGame() {
         SceneManager.LoadScene(character_select);
+        level = default_level;
     }
+
 
 }

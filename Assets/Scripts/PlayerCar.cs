@@ -87,7 +87,7 @@ public class PlayerCar : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetButton("Sudoku"+id)) {
+		if (false) {// Input.GetButton("Sudoku"+id)) {
             if (cur_off_time < off_time) {
                 cur_off_time += Time.deltaTime;
             } else {
