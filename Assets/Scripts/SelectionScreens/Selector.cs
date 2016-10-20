@@ -116,6 +116,8 @@ public class Selector : MonoBehaviour {
 				bool button_pushed = true;
 				if (Input.GetButtonDown ("Ultimate" + i)) {
 					rec.Receive (i, cursors [i].GetPointer().contents, label);
+				} else if (Input.GetButtonDown ("Ability" + i)) {
+					rec.Receive (i, null, label);
 				} else if (Input.GetAxis ("Horizontal" + i) > 0) {
 					cursors [i].GetPointer().PassRight (i);
 				} else if (Input.GetAxis ("Horizontal" + i) < 0) {

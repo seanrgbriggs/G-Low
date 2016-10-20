@@ -8,7 +8,7 @@ public class Cursor : MonoBehaviour {
 	Selectable pointer;
 
 	public Vector3 cursor_offset = Vector3.zero;
-	public static float max_cooldown = 0.3f;
+	public static float max_cooldown = 0.74f;
 
 
 	public virtual void Start(){
