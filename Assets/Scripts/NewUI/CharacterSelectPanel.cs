@@ -56,7 +56,9 @@ public class CharacterSelectPanel : MonoBehaviour {
 	}
 
     public void SetChoice(GameObject choice) {
-        selections[id] = choice;
+        if (started) {
+            selections[id] = choice;
+        }
     }
 
     public void SetMode(bool active) {
