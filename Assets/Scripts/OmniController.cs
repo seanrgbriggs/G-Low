@@ -6,6 +6,7 @@ public class OmniController : Receiver {
 
     public int max_players = 4;
     public string character_select;
+	public string map_select;
     public string default_level;
 
     public string level { get; set; }
@@ -36,12 +37,19 @@ public class OmniController : Receiver {
     public void EndGame() {
         SceneManager.LoadScene(character_select);
         level = default_level;
+		System.Array.Clear (characters, 0, max_players);
     }
+		
 
 	public override void Receive(int id, Object obj, string label){
 		print (label + ": " + obj.name);
 
 		if (label == "character") {
+
+			if (obj == null) {
+				characters [id] = null;
+				return;
+			} 
 
 			characters [id] = ((GameObject) obj);
 
@@ -50,6 +58,10 @@ public class OmniController : Receiver {
 	
 			models [id].GetComponent<MeshFilter> ().mesh = characters[id].GetComponent<MeshFilter> ().sharedMesh;
 			models [id].GetComponent<MeshRenderer> ().material = characters [id].GetComponent<MeshRenderer> ().sharedMaterial;
+
+			if (numLocked () >= numActiveCursors ()) {
+				SceneManager.LoadScene (map_select);
+			}
 			
 		} else if (label == "map") {
 
@@ -57,6 +69,14 @@ public class OmniController : Receiver {
 			StartGame ();
 
 		}
+	}
+
+	public int numLocked(){
+		return max_players - System.Array.FindAll (characters, (x) => x == null).Length;
+	}
+
+	public int numActiveCursors(){
+		return System.Array.FindAll (FindObjectsOfType<Cursor> (), (x) => x.isActive ()).Length;
 	}
 
 }
