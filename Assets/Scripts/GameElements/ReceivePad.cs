@@ -10,7 +10,6 @@ public class ReceivePad : MonoBehaviour {
     {
         if (col.tag == "Player")
         {
-            print("HI");
             col.GetComponent<Rigidbody>().AddForce(-transform.up * traction, ForceMode.Acceleration);
 
             if (Vector3.Distance(col.transform.up, transform.up) > 0.5f)

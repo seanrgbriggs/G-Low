@@ -6,7 +6,7 @@ public class OmniController : Receiver {
 
     public static int max_players = 4;
 	public static string character_select = "CharSel";
-	public static string map_select = "track2";
+	public static string map_select = "VincentScene";
 	public static string default_level = "Menu";
 
 	public static string level { get; set; }
@@ -69,7 +69,7 @@ public class OmniController : Receiver {
 				//SceneManager.LoadScene (map_select);
 				//TODO: remove these two lines
 
-				level = "track2";
+				level = "VincentScene";
 				SceneManager.LoadScene(level);
 
 			}

@@ -17,6 +17,7 @@ public class FinishLine : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         PlayerCar car = other.GetComponent<PlayerCar>();
         if (car != null) {
+            print(car.getLaps());
             if (car.getLaps() >= gc.laps_max) {
                 FindObjectOfType<OmniController>().EndGame();
             }
