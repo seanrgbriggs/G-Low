@@ -4,35 +4,41 @@ using UnityEngine.SceneManagement;
 
 public class OmniController : Receiver {
 
-    public int max_players = 4;
-    public string character_select;
-	public string map_select;
-    public string default_level;
+    public static int max_players = 4;
+	public static string character_select = "CharSel";
+	public static string map_select = "track2";
+	public static string default_level = "Menu";
 
-    public string level { get; set; }
-    public GameObject[] characters { get; set; }
+	public static string level { get; set; }
+	public static GameObject[] characters { get; set; }
 
+	static bool globalStart = false;
+
+	void GlobalStart(){
+		if (!globalStart) {
+			characters = new GameObject[max_players];
+
+		}
+	}
 	// Use this for initialization
 	void Start () {
         level = default_level;
-        characters = new GameObject[max_players];
-        DontDestroyOnLoad(gameObject);
-    }
+		GlobalStart ();
+     }
 	
 
     public void StartGame() {
-        SceneManager.LoadScene(level);
         int i = 0;
-        foreach(GameObject spawnpoint in GameObject.FindGameObjectsWithTag("Spawnpoint"))
+ 		foreach(GameObject spawnpoint in GameObject.FindGameObjectsWithTag("Spawnpoint"))
         {
             if (characters[i] == null)
             {
-                continue;
+                 continue;
             }
-            GameObject player = (GameObject) Instantiate(characters[i++], spawnpoint.transform.position, spawnpoint.transform.rotation);
-			player.GetComponent<PlayerCar> ().id = i - 1;
+            GameObject player = (GameObject) Instantiate(characters[i], spawnpoint.transform.position, spawnpoint.transform.rotation);
+			player.GetComponent<PlayerCar> ().id = i++;
         }
-    }
+     }
 
     public void EndGame() {
         SceneManager.LoadScene(character_select);
@@ -42,7 +48,7 @@ public class OmniController : Receiver {
 		
 
 	public override void Receive(int id, Object obj, string label){
-		print (label + ": " + obj.name);
+	//	print (label + ": " + obj.name);
 
 		if (label == "character") {
 
@@ -51,23 +57,33 @@ public class OmniController : Receiver {
 				return;
 			} 
 
-			characters [id] = ((GameObject) obj);
+			characters [id] = ((GameObject)obj);
 
 			GameObject[] models = GameObject.FindGameObjectsWithTag ("Player");
 			System.Array.Sort (models, ((x, y) => x.name.CompareTo (y.name)));
 	
-			models [id].GetComponent<MeshFilter> ().mesh = characters[id].GetComponent<MeshFilter> ().sharedMesh;
+			models [id].GetComponent<MeshFilter> ().mesh = characters [id].GetComponent<MeshFilter> ().sharedMesh;
 			models [id].GetComponent<MeshRenderer> ().material = characters [id].GetComponent<MeshRenderer> ().sharedMaterial;
 
 			if (numLocked () >= numActiveCursors ()) {
-				SceneManager.LoadScene (map_select);
+				//SceneManager.LoadScene (map_select);
+				//TODO: remove these two lines
+
+				level = "track2";
+				SceneManager.LoadScene(level);
+
 			}
 			
 		} else if (label == "map") {
 
 			level = obj.name;
-			StartGame ();
+			SceneManager.LoadScene(level);
 
+
+		} else if (label == "menu") {
+			if (obj.name.Contains ("lay")) {
+				SceneManager.LoadScene (character_select);
+			}
 		}
 	}
 
