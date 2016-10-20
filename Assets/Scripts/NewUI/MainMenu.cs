@@ -14,6 +14,6 @@ public class MainMenu : MonoBehaviour {
 	}
 
     public void Play() {
-        Application.LoadLevel("CharSel");
+        Application.LoadLevel("MapSel");
     }
 }

@@ -25,7 +25,11 @@ public class CharacterMenuGlobal : MonoBehaviour {
         }
 
         if (ready && players > 0) {
-            Application.LoadLevel("VincentScene");
+            if (MapSelect.map != "") {
+                Application.LoadLevel(MapSelect.map);
+            } else {
+                Application.LoadLevel("VincentScene");
+            }
         }
 	}
 }
