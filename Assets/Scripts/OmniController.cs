@@ -10,9 +10,11 @@ public class OmniController : Receiver {
 	public static string default_level = "Menu";
 
 	public static string level { get; set; }
-	public static GameObject[] characters { get; set; }
+    public static GameObject[] characters = new GameObject[4];
 
 	static bool globalStart = false;
+
+    public GameObject[] defaultCharacters;
 
 	void GlobalStart(){
 		if (!globalStart) {
@@ -29,11 +31,18 @@ public class OmniController : Receiver {
 
     public void StartGame() {
         int i = 0;
- 		foreach(GameObject spawnpoint in GameObject.FindGameObjectsWithTag("Spawnpoint"))
-        {
-            if (characters[i] == null)
-            {
-                 continue;
+        characters = CharacterSelectPanel.selections;
+        print(characters[1]);
+        if (characters == null || characters[0] == null) {
+            characters = defaultCharacters;
+        }
+
+ 		foreach(GameObject spawnpoint in GameObject.FindGameObjectsWithTag("Spawnpoint")) {
+            if (i >= characters.Length) {
+                break;
+            }
+            if (characters[i] == null) {
+                continue;
             }
             GameObject player = (GameObject) Instantiate(characters[i], spawnpoint.transform.position, spawnpoint.transform.rotation);
 			player.GetComponent<PlayerCar> ().id = i++;

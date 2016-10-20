@@ -54,7 +54,14 @@ public class PlayerCar : MonoBehaviour {
         Camera cam = GetComponentInChildren<Camera>();
         float f = gc.getNumPlayers() == 2 ? 1.0f : 0.5f;
 
-        Rect camRect = new Rect((id % 2) * 0.5f, (id / 2) * 0.5f, 0.5f, f);
+        Rect camRect;
+        if (gc.getNumPlayers() == 1) {
+            camRect = new Rect(0, 0, 1, 1);
+        } else if (gc.getNumPlayers() == 2) {
+            camRect = new Rect(id * 0.5f, 0, 0.5f, 1);
+        } else {
+            camRect = new Rect((id % 2) * 0.5f, (id / 2) * 0.5f, 0.5f, 1);
+        }
 
         cam.rect = camRect;
 
