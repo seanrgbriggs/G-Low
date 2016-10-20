@@ -15,10 +15,15 @@ public class GameController : MonoBehaviour {
     public int laps_max;
     public float playerSpeedMultiplier = 1.0f;
 
+
+	void Awake(){
+		omni = FindObjectOfType<OmniController>();
+		omni.StartGame ();
+	}
     // Use this for initialization
-    void Start()
+
+	void Start()
     {
-        omni = FindObjectOfType<OmniController>();
         players = new List<PlayerCar>(FindObjectsOfType<PlayerCar>());
 
 

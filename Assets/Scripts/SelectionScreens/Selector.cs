@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class Selector : MonoBehaviour {
 
 	public Selectable[] menu;
-	public Receiver rec;
 	public string label = "";
+	public string rec_label = "";
+
 
 	public int gridAssign; //Assign nodes in a grid pattern, assuming the provided number of rows.
 	public bool doPhysicalAssignment; //Assign nearby nodes by world location
@@ -17,6 +18,9 @@ public class Selector : MonoBehaviour {
 	public const float max_cooldown = 0.1f;
 
 	public List<Cursor> cursors;
+
+	Receiver rec;
+
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +35,12 @@ public class Selector : MonoBehaviour {
 			menu [0].registerCursor(c);
 		}
 
+		foreach (Receiver r in FindObjectsOfType<Receiver>()) {
+			if (r.reciever_label == rec_label) {
+				rec = r;
+				break;
+			}
+		}
 	}
 
 	void SetupMenu(){
