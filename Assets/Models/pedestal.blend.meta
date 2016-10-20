@@ -6,10 +6,40 @@ ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Pedestal_high
+    100004: Pedestal_low
+    100006: Pedestal0
+    100008: Pedestal1
+    100010: Pedestal2
+    100012: Pedestal3
     400000: //RootNode
+    400002: Pedestal_high
+    400004: Pedestal_low
+    400006: Pedestal0
+    400008: Pedestal1
+    400010: Pedestal2
+    400012: Pedestal3
     2300000: //RootNode
+    2300002: Pedestal_high
+    2300004: Pedestal_low
+    2300006: Pedestal0
+    2300008: Pedestal1
+    2300010: Pedestal2
+    2300012: Pedestal3
     3300000: //RootNode
+    3300002: Pedestal_high
+    3300004: Pedestal_low
+    3300006: Pedestal0
+    3300008: Pedestal1
+    3300010: Pedestal2
+    3300012: Pedestal3
     4300000: Pedestal
+    4300002: Pedestal_high
+    4300004: Pedestal_low
+    4300006: Pedestal3
+    4300008: Pedestal2
+    4300010: Pedestal1
+    4300012: Pedestal0
     7400000: Default Take
     9500000: //RootNode
   materials:

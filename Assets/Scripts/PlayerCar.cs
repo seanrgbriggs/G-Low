@@ -32,6 +32,8 @@ public class PlayerCar : MonoBehaviour {
     private float drag;
     private bool onTrack;
 
+    public GameObject victoryPrefab;
+
     // Use this for initialization
     void Awake () {
         rb = GetComponent<Rigidbody>();
