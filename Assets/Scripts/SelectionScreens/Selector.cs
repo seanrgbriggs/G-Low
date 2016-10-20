@@ -15,7 +15,8 @@ public class Selector : MonoBehaviour {
 	public bool disallowHorizontal;
 	public bool disallowVertical;
 
-	public const float max_cooldown = 0.1f;
+	public const float max_cooldown = 0.74f;
+	public const float curs_dead_zone = 0.2f;
 
 	public List<Cursor> cursors;
 
@@ -128,13 +129,13 @@ public class Selector : MonoBehaviour {
 					rec.Receive (i, cursors [i].GetPointer().contents, label);
 				} else if (Input.GetButtonDown ("Ability" + i)) {
 					rec.Receive (i, null, label);
-				} else if (Input.GetAxis ("Horizontal" + i) > 0) {
+				} else if (Input.GetAxis ("Horizontal" + i) > curs_dead_zone) {
 					cursors [i].GetPointer().PassRight (i);
-				} else if (Input.GetAxis ("Horizontal" + i) < 0) {
+				} else if (Input.GetAxis ("Horizontal" + i) < -curs_dead_zone) {
 					cursors [i].GetPointer().PassLeft (i);
-				} else if (Input.GetAxis ("Vertical" + i) > 0) {
+				} else if (Input.GetAxis ("Vertical" + i) > curs_dead_zone) {
 					cursors [i].GetPointer().PassUp (i);
-				} else if (Input.GetAxis ("Vertical" + i) < 0) {
+				} else if (Input.GetAxis ("Vertical" + i) < -curs_dead_zone) {
 					cursors [i].GetPointer().PassDown (i);
 				} else {
 					button_pushed = false;
