@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class HondaAbilities : PlayerAbilities {
 
     public float nitrous_power;
-    public float spin_power;
 
     bool is_nitrous;
+    bool is_spectral;
     Rigidbody rb;
 
     protected override void Start()
@@ -18,24 +18,19 @@ public class HondaAbilities : PlayerAbilities {
 
 
     protected override void Update() {
-        if (GetAbilityCooldown() >= 0.25f && Input.GetButtonDown("Ability" + id) && !is_nitrous)
-        {
+        if (GetAbilityCooldown() >= 0.25f && Input.GetButtonDown("Ability" + id) && !is_nitrous)  {
             UseAbility();
-        }
-        else if(is_nitrous)
-        {
+        } else if(is_nitrous) {
             UseAbility();
-        }else if (abil_cd < abil_max && !is_nitrous)
-        {
+        } else if (abil_cd < abil_max && !is_nitrous) {
             abil_cd += Time.deltaTime;
         }
 
-        if (Input.GetButtonDown("Ultimate" + id))
-        {
+        if (GetUltimateCooldown() >= 0.25f && Input.GetButtonDown("Ultimate" + id) && !is_spectral) {
             UseUltimate();
-        }
-        if (ult_cd < ult_max)
-        {
+        } else if (is_spectral) {
+            UseUltimate();
+        } else if (ult_cd < ult_max && !is_spectral) {
             ult_cd += Time.deltaTime;
         }
     }
@@ -58,12 +53,17 @@ public class HondaAbilities : PlayerAbilities {
 
     public override bool UseUltimate()
     {
-        if (!base.UseUltimate())
-        {
+        if(ult_cd <= 0) {
+            ult_cd = -ult_max / 4;
+            is_spectral = false;
+            gameObject.layer = PlayerCar.LAYER_DEFAULT;
             return false;
         }
+
+        is_spectral = true;
+        ult_cd -= Time.deltaTime * 2;
+        gameObject.layer = PlayerCar.LAYER_SPECTRAL;
         
-        rb.AddTorque(transform.up * spin_power, ForceMode.Acceleration);
         return true;
     }
 

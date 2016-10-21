@@ -11,6 +11,9 @@ public class ChoiceButton : MonoBehaviour, IPointerEnterHandler, ISelectHandler 
 
     public GameObject prefab;
 
+    public string ability;
+    public string ultimate;
+
     void Start() {
         myMeshFilter = GetComponentInChildren<MeshFilter>();
         myMeshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -28,7 +31,7 @@ public class ChoiceButton : MonoBehaviour, IPointerEnterHandler, ISelectHandler 
         targetMeshRenderer.material = myMeshRenderer.material;
         targetMeshFilter.mesh = myMeshFilter.mesh;
 
-        GetComponentInParent<CharacterSelectPanel>().SetChoice(prefab);
+        GetComponentInParent<CharacterSelectPanel>().SetChoice(prefab, ability, ultimate);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {

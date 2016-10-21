@@ -19,6 +19,7 @@ public class CharacterSelectPanel : MonoBehaviour {
     public Color[] colors;
 
     public Text statusText;
+    public Text abilitiesText;
 
     void Start() {
         started = false;
@@ -63,9 +64,11 @@ public class CharacterSelectPanel : MonoBehaviour {
         }
     }
 
-    public void SetChoice(GameObject choice) {
+    public void SetChoice(GameObject choice, string ability, string ultimate) {
         if (started) {
             selections[id] = choice;
+
+            abilitiesText.text = "ABILITY: " + ability + "\nULTIMATE: " + ultimate;
         }
     }
 

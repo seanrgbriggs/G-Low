@@ -36,8 +36,14 @@ public class PlayerCar : MonoBehaviour {
 
     private MeshRenderer[] meshes;
 
+    public static int LAYER_DEFAULT;
+    public static int LAYER_SPECTRAL;
+
     // Use this for initialization
     void Awake () {
+        LAYER_DEFAULT = LayerMask.NameToLayer("Default");
+        LAYER_SPECTRAL = LayerMask.NameToLayer("Spectral");
+
         meshes = GetComponentsInChildren<MeshRenderer>();
         print(meshes.Length);
         rb = GetComponent<Rigidbody>();
@@ -46,6 +52,8 @@ public class PlayerCar : MonoBehaviour {
 		primedForLap = false;
 		num_laps = 0;
 		distance = 0;
+
+        gameObject.layer = LAYER_DEFAULT;
 
         foreach (MeshRenderer mesh in meshes) {
             mesh.material = Instantiate(mesh.material);
