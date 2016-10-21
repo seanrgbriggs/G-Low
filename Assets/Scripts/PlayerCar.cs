@@ -155,7 +155,7 @@ public class PlayerCar : MonoBehaviour {
             } else {
                 rb.velocity = Vector3.zero;
                 transform.position = furthest_waypoint.transform.position;
-                transform.LookAt(furthest_waypoint.transform.position + furthest_waypoint.transform.forward, furthest_waypoint.transform.up);
+                transform.rotation = furthest_waypoint.transform.rotation;
                    
 
                 cur_off_time = 0;
@@ -188,12 +188,20 @@ public class PlayerCar : MonoBehaviour {
         waypoints.Sort((x, y) => x.distanceFrom(transform.position).CompareTo(y.distanceFrom(transform.position)));
 
         distance = WaypointScript.distBetween (waypoints [0], waypoints [1], transform.position);
-		if (!primedForLap && distance > 0.5f && distance < 0.55f) {
-			primedForLap = true;
-		} else if (primedForLap && (distance > 0.98f || distance < 0.03f)) {
-			num_laps++;
-            furthest_waypoint = waypoints[0];
-            primedForLap = false;
+		if (distance > 0.5f && distance < 0.55f) {
+            if (waypoints[0].id == 0 || waypoints[1].id == 0) {
+                if (primedForLap) {
+                    num_laps++;
+                    furthest_waypoint = waypoints[0];
+                    primedForLap = false;
+                    print("LAP");
+                }
+            } else {
+                if (!primedForLap) {
+                    primedForLap = true;
+                    print("PRIMED");
+                }
+            }
 		}
  
         if(furthest_waypoint == null)
