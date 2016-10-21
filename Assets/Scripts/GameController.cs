@@ -12,6 +12,9 @@ public class GameController : MonoBehaviour {
 
     public GameObject[] UIPrefabs;
 
+    public Color[] playerColors;
+    public static Color[] staticColors;
+
     public int laps_max;
     public float playerSpeedMultiplier = 1.0f;
 
@@ -25,7 +28,7 @@ public class GameController : MonoBehaviour {
 	void Start()
     {
         players = new List<PlayerCar>(FindObjectsOfType<PlayerCar>());
-
+        staticColors = playerColors;
 
         waypoints = FindObjectsOfType<WaypointScript>();
 

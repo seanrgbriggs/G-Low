@@ -32,7 +32,7 @@ public class OmniController : Receiver {
     public void StartGame() {
         int i = 0;
         characters = CharacterSelectPanel.selections;
-        print(characters[1]);
+
         if (characters == null || characters[0] == null) {
             characters = defaultCharacters;
         }

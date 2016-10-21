@@ -16,7 +16,12 @@ public class ChoiceButton : MonoBehaviour, IPointerEnterHandler, ISelectHandler 
         myMeshRenderer = GetComponentInChildren<MeshRenderer>();
 
         myMeshFilter.mesh = prefab.GetComponent<MeshFilter>().sharedMesh;
-        myMeshRenderer.material = prefab.GetComponent<MeshRenderer>().sharedMaterial;
+        myMeshRenderer.material = Instantiate(prefab.GetComponent<MeshRenderer>().sharedMaterial);
+
+        CharacterSelectPanel panel = GetComponentInParent<CharacterSelectPanel>();
+        
+        Color base_col = panel.colors[panel.id] * 2;
+        myMeshRenderer.material.SetColor("_EmissionColor", base_col);
     }
 
     void UpdateMesh() {

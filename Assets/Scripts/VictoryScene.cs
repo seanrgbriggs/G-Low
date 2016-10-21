@@ -13,6 +13,13 @@ public class VictoryScene : MonoBehaviour {
                 obj.transform.parent = marker.transform.parent;
                 obj.transform.localPosition = marker.transform.localPosition;
                 obj.transform.localRotation = marker.transform.localRotation;
+
+                Color base_col = GameController.staticColors[i] * 2;
+                
+                foreach (MeshRenderer mesh in obj.GetComponentsInChildren<MeshRenderer>()) {
+                    mesh.material = Instantiate(mesh.material);
+                    mesh.material.SetColor("_EmissionColor", base_col);
+                }
             }
 
             Destroy(marker);

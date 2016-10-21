@@ -16,6 +16,8 @@ public class CharacterSelectPanel : MonoBehaviour {
 
     public static GameObject[] selections = new GameObject[4];
 
+    public Color[] colors;
+
     public Text statusText;
 
     void Start() {
@@ -44,8 +46,7 @@ public class CharacterSelectPanel : MonoBehaviour {
                 SetMode(true);
                 choiceButtons[0].Select();
             } else {
-                ready = true;
-                statusText.text = "WAITING FOR PLAYERS";
+                Done();
             }
         }
 
@@ -54,6 +55,13 @@ public class CharacterSelectPanel : MonoBehaviour {
             statusText.text = "PRESS RIGHT BUMPER";
         }
 	}
+
+    public void Done() {
+        if (started) {
+            ready = true;
+            statusText.text = "WAITING FOR PLAYERS";
+        }
+    }
 
     public void SetChoice(GameObject choice) {
         if (started) {

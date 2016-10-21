@@ -34,8 +34,12 @@ public class PlayerCar : MonoBehaviour {
 
     public GameObject victoryPrefab;
 
+    private MeshRenderer[] meshes;
+
     // Use this for initialization
     void Awake () {
+        meshes = GetComponentsInChildren<MeshRenderer>();
+        print(meshes.Length);
         rb = GetComponent<Rigidbody>();
         abil = GetComponent<PlayerAbilities>();
 
@@ -43,7 +47,11 @@ public class PlayerCar : MonoBehaviour {
 		num_laps = 0;
 		distance = 0;
 
-        base_col = GetComponent<Renderer>().material.GetColor("_EmissionColor");
+        foreach (MeshRenderer mesh in meshes) {
+            mesh.material = Instantiate(mesh.material);
+        }
+        
+        
         drag = rb.drag;
     }
 
@@ -64,6 +72,8 @@ public class PlayerCar : MonoBehaviour {
         } else {
             camRect = new Rect((id % 2) * 0.5f, (id / 2) * 0.5f, 0.5f, 1);
         }
+
+        base_col = gc.playerColors[id] * 2;
 
         cam.rect = camRect;
 
@@ -159,8 +169,10 @@ public class PlayerCar : MonoBehaviour {
         } else {
             brightness = rb.velocity.magnitude / max;
         }
-        Material m = GetComponent<Renderer>().material;
-        m.SetColor("_EmissionColor", base_col * brightness);// (1 - cur_off_time / off_time));
+
+        foreach (MeshRenderer mesh in meshes) {
+            mesh.material.SetColor("_EmissionColor", base_col * brightness);
+        }
     }
 
     void HandleLapping(){
