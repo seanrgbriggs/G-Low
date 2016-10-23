@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CharacterMenuGlobal : MonoBehaviour {
     CharacterSelectPanel[] panels;
@@ -26,9 +27,9 @@ public class CharacterMenuGlobal : MonoBehaviour {
 
         if (ready && players > 0) {
             if (MapSelect.map != "") {
-                Application.LoadLevel(MapSelect.map);
+                SceneManager.LoadScene(MapSelect.map, LoadSceneMode.Single);
             } else {
-                Application.LoadLevel("VincentScene");
+                SceneManager.LoadScene("VincentScene", LoadSceneMode.Single);
             }
         }
 	}
