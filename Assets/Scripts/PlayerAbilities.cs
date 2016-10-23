@@ -5,6 +5,10 @@ public abstract class PlayerAbilities : MonoBehaviour {
     public float abil_max;
     public float ult_max;
 
+	private AudioSource aud_src;
+	public AudioClip abil_clip;
+	public AudioClip ult_clip;
+
     protected float abil_cd;
     protected float ult_cd;
 
@@ -15,6 +19,8 @@ public abstract class PlayerAbilities : MonoBehaviour {
     {
         abil_cd = 0;
         ult_cd = 0;
+
+		aud_src = GetComponent<AudioSource> ();
 
         player = GetComponent<PlayerCar>();
         id = player.id;
@@ -46,6 +52,9 @@ public abstract class PlayerAbilities : MonoBehaviour {
         if (u)
         {
             abil_cd = 0;
+			if (aud_src != null) {
+				aud_src.PlayOneShot (abil_clip);
+			}
         }
         return u;
     }
@@ -56,6 +65,9 @@ public abstract class PlayerAbilities : MonoBehaviour {
         if (u)
         {
             ult_cd = 0;
+			if (aud_src != null) {
+				aud_src.PlayOneShot (ult_clip);
+			}
         }
         return u;
     }

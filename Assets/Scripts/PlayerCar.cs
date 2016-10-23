@@ -70,7 +70,6 @@ public class PlayerCar : MonoBehaviour {
         waypoints = new List<WaypointScript>(gc.getWaypoints());
 
         Camera cam = GetComponentInChildren<Camera>();
-        float f = gc.getNumPlayers() == 2 ? 1.0f : 0.5f;
 
         Rect camRect;
         if (gc.getNumPlayers() == 1) {
@@ -185,6 +184,10 @@ public class PlayerCar : MonoBehaviour {
 
     void HandleLapping(){
        
+		if (!onTrack) {
+			return;
+		}
+
         waypoints.Sort((x, y) => x.distanceFrom(transform.position).CompareTo(y.distanceFrom(transform.position)));
 
         distance = WaypointScript.distBetween (waypoints [0], waypoints [1], transform.position);
