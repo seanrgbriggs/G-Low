@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class FinishLine : MonoBehaviour {
     private GameController gc;
@@ -28,7 +29,7 @@ public class FinishLine : MonoBehaviour {
                 winners[place++] = car.victoryPrefab;
 
                 if (place >= gc.getNumPlayers()) {
-                    Application.LoadLevel("Victory");
+                    SceneManager.LoadScene("Victory", LoadSceneMode.Single);
                 }
 
                 car.enabled = false;

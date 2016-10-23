@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class VictoryScene : MonoBehaviour {
     public GameObject[] markers;
@@ -30,7 +31,7 @@ public class VictoryScene : MonoBehaviour {
 	void Update () {
 	    if (Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel")) {
             if (Time.timeSinceLevelLoad > 1.0f) {
-                Application.LoadLevel("Menu2");
+                SceneManager.LoadScene("Menu2", LoadSceneMode.Single);
             }
         }
 	}

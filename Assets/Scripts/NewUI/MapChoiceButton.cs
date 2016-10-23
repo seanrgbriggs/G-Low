@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class MapChoiceButton : MonoBehaviour, IPointerEnterHandler, ISelectHandler {
     public GameObject prefab;
@@ -16,7 +17,7 @@ public class MapChoiceButton : MonoBehaviour, IPointerEnterHandler, ISelectHandl
     }
 
     public void Done() {
-        Application.LoadLevel("CharSel");
+        SceneManager.LoadScene("CharSel", LoadSceneMode.Single);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {

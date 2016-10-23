@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
@@ -14,6 +15,6 @@ public class MainMenu : MonoBehaviour {
 	}
 
     public void Play() {
-        Application.LoadLevel("MapSel");
+        SceneManager.LoadScene("MapSel", LoadSceneMode.Single);
     }
 }
