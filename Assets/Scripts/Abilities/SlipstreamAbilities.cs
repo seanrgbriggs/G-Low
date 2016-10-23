@@ -17,6 +17,7 @@ public class SlipstreamAbilities : PlayerAbilities {
 
 		gc = FindObjectOfType<GameController> ();
 		rb = GetComponent<Rigidbody> ();
+
 	}
 
 	protected override void Update(){
@@ -48,11 +49,12 @@ public class SlipstreamAbilities : PlayerAbilities {
 	// Update is called once per frame
 	bool Roll (float power) {
 		rb.AddForce (transform.right * power, ForceMode.VelocityChange);
+		return true;
 	}
 
 	void boostIfAlone(){
 		foreach (PlayerCar p in gc.getPlayers()) {
-			if (Vector3.Distance (transform.position, p.transform.position)) {
+			if (Vector3.Distance (transform.position, p.transform.position) <= isolation_range && p != player) {
 				ult_cd = 0;
 				return;
 			}
