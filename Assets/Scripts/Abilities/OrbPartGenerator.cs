@@ -8,12 +8,19 @@ public class OrbPartGenerator : MonoBehaviour {
 	public int coverage = 3;
 	public float radius = 5;
 
-	GameObject[] parts;
+	public GameObject[] parts { set; get; }
 
-	// Use this for initialization
-	void Start () {
+    Stack<GameObject> enabled_parts;
+    Stack<GameObject> disabled_parts;
+
+    // Use this for initialization
+    void Awake () {
 		HyperCubeRejection ();
+
+        enabled_parts = new Stack<GameObject>(parts);
+        disabled_parts = new Stack<GameObject>();
 	}
+
 
 	void HyperCubeRejection (){
 		List<GameObject> newparts = new List<GameObject> ();
@@ -32,6 +39,7 @@ public class OrbPartGenerator : MonoBehaviour {
 				GameObject new_orb_part = (GameObject) Instantiate(part_prefab, transform.position + delta, Quaternion.identity);
 				new_orb_part.transform.SetParent (transform);
 				newparts.Add (new_orb_part);
+                
 			}
 		}
 
@@ -39,10 +47,28 @@ public class OrbPartGenerator : MonoBehaviour {
 
 		return;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		OrbPartPhysics part = parts [0].GetComponent<OrbPartPhysics>();
-		print (part.direction + " " + part.delta);	
-	}
+
+    public bool Disable() {
+        if (enabled_parts.Count <= 0) {
+            return false;
+        }
+
+        GameObject part = enabled_parts.Pop();
+        part.SetActive(false);
+        disabled_parts.Push(part);
+        return true;
+    }
+    public bool Enable()
+    {
+        if (disabled_parts.Count <= 0)
+        {
+            return false;
+        }
+
+        GameObject part = disabled_parts.Pop();
+        part.SetActive(true);
+        part.GetComponent<OrbPartPhysics>().SpawnParticles();
+        enabled_parts.Push(part);
+        return true;
+    }
 }

@@ -23,7 +23,7 @@ public class PlayerCar : MonoBehaviour {
 	GameController gc;
     List<WaypointScript> waypoints;
 
-    Color base_col;
+    public Color base_col { set; get; }
     public float hoverDist = 3.0f;
 
     Vector3 camAngles;
@@ -45,13 +45,15 @@ public class PlayerCar : MonoBehaviour {
     public GameObject respawnParticles;
     private bool canRespawn = true;
 
+    public AudioClip respawnSound;
+    public AudioClip deathSound;
+
     // Use this for initialization
     void Awake () {
         LAYER_DEFAULT = LayerMask.NameToLayer("Default");
         LAYER_SPECTRAL = LayerMask.NameToLayer("Spectral");
 
-        meshes = GetComponentsInChildren<MeshRenderer>();
-        print(meshes.Length);
+
         rb = GetComponent<Rigidbody>();
         abil = GetComponent<PlayerAbilities>();
 
@@ -60,22 +62,24 @@ public class PlayerCar : MonoBehaviour {
 		distance = 0;
 
         gameObject.layer = LAYER_DEFAULT;
-
-        foreach (MeshRenderer mesh in meshes) {
-            mesh.material = Instantiate(mesh.material);
-        }
-        
         
         drag = rb.drag;
     }
 
     void Start() {
         furthest_waypoint = gc.getWaypoints()[0];
-     }
+
+        meshes = GetComponentsInChildren<MeshRenderer>();
+        print(meshes.Length);
+        foreach (MeshRenderer mesh in meshes)
+        {
+            mesh.material = Instantiate(mesh.material);
+        }
+    }
 
     void SpawnParticles(GameObject prefab)
     {
-        GameObject particles = (GameObject)Instantiate(deathParticles, transform.position, transform.rotation);
+        GameObject particles = (GameObject)Instantiate(prefab, transform.position, transform.rotation);
         ParticleSystem system = particles.GetComponent<ParticleSystem>();
 
         ParticleSystem.ShapeModule shape = system.shape;
@@ -136,8 +140,7 @@ public class PlayerCar : MonoBehaviour {
         HandleDimming();
 		HandleLapping ();
         //GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
-        print(furthest_waypoint.value + " " + (num_laps + distance));
-    }
+     }
 
 	void HandleRaycast() {
 		RaycastHit hit;
@@ -209,8 +212,15 @@ public class PlayerCar : MonoBehaviour {
         {
             canRespawn = false;
             SpawnDeathParticles();
+
+            GetComponent<AudioSource>().PlayOneShot(deathSound, 1);
+            Invoke("PlayRezNoise", 0.5f);
             Invoke("Respawn", 1.5f);
         }
+    }
+
+    void PlayRezNoise() {
+        GetComponent<AudioSource>().PlayOneShot(respawnSound, 0.25f);
     }
 
     void Respawn()
@@ -229,7 +239,7 @@ public class PlayerCar : MonoBehaviour {
 
         rb.isKinematic = false;
 
-        SpawnParticles(respawnParticles);
+        SpawnParticles(deathParticles);
     }
 
     void HandleDimming()
