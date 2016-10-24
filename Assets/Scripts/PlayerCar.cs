@@ -181,12 +181,7 @@ public class PlayerCar : MonoBehaviour {
             if (cur_off_time < off_time) {
                 cur_off_time += Time.deltaTime;
             } else {
-                if (canRespawn)
-                {
-                    canRespawn = false;
-                    SpawnDeathParticles();
-                    Invoke("Respawn", 1.5f);
-                }
+                Die();
             }
         }else
         {
@@ -194,6 +189,24 @@ public class PlayerCar : MonoBehaviour {
         }
 
 	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.CompareTag("KillYou"))
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        if (canRespawn)
+        {
+            canRespawn = false;
+            SpawnDeathParticles();
+            Invoke("Respawn", 1.5f);
+        }
+    }
 
     void Respawn()
     {
