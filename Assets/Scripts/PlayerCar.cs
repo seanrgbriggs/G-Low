@@ -41,6 +41,10 @@ public class PlayerCar : MonoBehaviour {
 
     public float thrustPower = 5.0f;
 
+    public GameObject deathParticles;
+    public GameObject respawnParticles;
+    private bool canRespawn = true;
+
     // Use this for initialization
     void Awake () {
         LAYER_DEFAULT = LayerMask.NameToLayer("Default");
@@ -63,6 +67,29 @@ public class PlayerCar : MonoBehaviour {
         
         
         drag = rb.drag;
+    }
+
+    void SpawnParticles(GameObject prefab)
+    {
+        GameObject particles = (GameObject)Instantiate(deathParticles, transform.position, transform.rotation);
+        ParticleSystem system = particles.GetComponent<ParticleSystem>();
+
+        ParticleSystem.ShapeModule shape = system.shape;
+        shape.mesh = GetComponent<MeshFilter>().mesh;
+
+        system.startColor = base_col;
+    }
+
+    void SpawnDeathParticles()
+    {
+        foreach (MeshRenderer mesh in meshes)
+        {
+            mesh.enabled = false;
+        }
+
+        rb.isKinematic = true;
+
+        SpawnParticles(deathParticles);
     }
 
     public void ReadyFields()
@@ -154,13 +181,12 @@ public class PlayerCar : MonoBehaviour {
             if (cur_off_time < off_time) {
                 cur_off_time += Time.deltaTime;
             } else {
-                rb.velocity = Vector3.zero;
-                transform.position = furthest_waypoint.transform.position;
-                transform.rotation = furthest_waypoint.transform.rotation;
-                   
-
-                cur_off_time = 0;
-                print(transform.up);
+                if (canRespawn)
+                {
+                    canRespawn = false;
+                    SpawnDeathParticles();
+                    Invoke("Respawn", 1.5f);
+                }
             }
         }else
         {
@@ -168,6 +194,25 @@ public class PlayerCar : MonoBehaviour {
         }
 
 	}
+
+    void Respawn()
+    {
+        canRespawn = true;
+        rb.velocity = Vector3.zero;
+        transform.position = furthest_waypoint.transform.position;
+        transform.rotation = furthest_waypoint.transform.rotation;
+        
+        cur_off_time = 0;
+
+        foreach (MeshRenderer mesh in meshes)
+        {
+            mesh.enabled = true;
+        }
+
+        rb.isKinematic = false;
+
+        SpawnParticles(respawnParticles);
+    }
 
     void HandleDimming()
     {
