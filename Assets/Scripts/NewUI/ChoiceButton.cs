@@ -27,7 +27,7 @@ public class ChoiceButton : MonoBehaviour, IPointerEnterHandler, ISelectHandler 
         myMeshRenderer.material.SetColor("_EmissionColor", base_col);
     }
 
-    void UpdateMesh() {
+    public void UpdateMesh() {
         targetMeshRenderer.material = myMeshRenderer.material;
         targetMeshFilter.mesh = myMeshFilter.mesh;
 
