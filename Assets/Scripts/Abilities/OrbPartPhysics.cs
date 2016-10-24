@@ -8,7 +8,7 @@ public class OrbPartPhysics : MonoBehaviour {
 	public Vector3 init;
 	public Vector3 direction;
 
-	float bounciness;
+	//float bounciness;
 	public float min_bounce;
 
 	Rigidbody rb;
@@ -20,7 +20,7 @@ public class OrbPartPhysics : MonoBehaviour {
 		init = transform.position;
 
 
-		bounciness = (init - center).magnitude;
+		//bounciness = (init - center).magnitude;
 		direction = (init - center).normalized;
 
 		rb = GetComponent<Rigidbody> ();
