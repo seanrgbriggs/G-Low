@@ -46,6 +46,8 @@ public class CharacterSelectPanel : MonoBehaviour {
                 started = true;
                 SetMode(true);
                 choiceButtons[0].Select();
+
+                choiceButtons[0].GetComponent<ChoiceButton>().UpdateMesh();
             } else {
                 Done();
             }

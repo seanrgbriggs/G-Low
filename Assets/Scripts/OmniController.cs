@@ -34,6 +34,12 @@ public class OmniController : Receiver {
         characters = CharacterSelectPanel.selections;
 
         if (characters == null || characters[0] == null) {
+            print(characters);
+            foreach (var c in characters)
+            {
+                print(c);
+            }
+
             characters = defaultCharacters;
         }
 

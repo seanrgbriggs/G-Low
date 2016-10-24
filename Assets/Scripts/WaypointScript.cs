@@ -49,7 +49,6 @@ public class WaypointScript : MonoBehaviour{
 
         if (first.value == 0 && second.value > 0.5f)
         {
-            print("hello");
             firstval = secondval;
             secondval = 1;
 
