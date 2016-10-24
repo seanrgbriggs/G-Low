@@ -8,9 +8,10 @@ public class SpeedPad : MonoBehaviour {
 	// Update is called once per frame
 	void OnTriggerStay(Collider col)
     {
-        if(col.tag == "Player")
+        if(col.CompareTag("Player"))
         {
-            col.GetComponent<Rigidbody>().AddForce(transform.forward * power, ForceMode.Acceleration);
+            Rigidbody rb = col.GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * power * rb.drag / .4f, ForceMode.Acceleration);
         }
     }
 }

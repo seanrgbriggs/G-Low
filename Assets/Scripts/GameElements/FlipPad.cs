@@ -9,8 +9,8 @@ public class FlipPad : MonoBehaviour {
     {
         if (col.tag == "Player")
         {
-            print("FLIP:)");
-            col.GetComponent<Rigidbody>().AddForce(transform.up * jump_boost, ForceMode.VelocityChange);
+            Rigidbody rb = col.GetComponent<Rigidbody>();
+            rb.AddForce(transform.up * jump_boost * Mathf.Sqrt(rb.drag / 0.4f), ForceMode.VelocityChange);
         }
     }
 

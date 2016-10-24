@@ -8,6 +8,11 @@ public class CharacterMenuGlobal : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         panels = FindObjectsOfType<CharacterSelectPanel>();
+
+        foreach (string s in Input.GetJoystickNames())
+        {
+            print(s);
+        }
 	}
 	
 	// Update is called once per frame
