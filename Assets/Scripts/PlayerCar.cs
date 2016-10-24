@@ -69,6 +69,10 @@ public class PlayerCar : MonoBehaviour {
         drag = rb.drag;
     }
 
+    void Start() {
+        furthest_waypoint = gc.getWaypoints()[0];
+     }
+
     void SpawnParticles(GameObject prefab)
     {
         GameObject particles = (GameObject)Instantiate(deathParticles, transform.position, transform.rotation);
@@ -127,11 +131,12 @@ public class PlayerCar : MonoBehaviour {
 
             //rb.AddForce(hit.normal * 9.8f * (2.0f - hit.distance));
             //transform.Rotate(Vector3.Cross(transform.up, hit.normal), Mathf.Min(Vector3.Angle(transform.up, hit.normal), 10 * Time.deltaTime), Space.World);
-
+            
 		HandleRaycast ();
         HandleDimming();
 		HandleLapping ();
- 		//GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
+        //GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
+        print(furthest_waypoint.value + " " + (num_laps + distance));
     }
 
 	void HandleRaycast() {
@@ -242,16 +247,16 @@ public class PlayerCar : MonoBehaviour {
         }
     }
 
-    void HandleLapping(){
-       
-		if (!onTrack) {
-			return;
-		}
+    void HandleLapping() {
+
+        if (!onTrack) {
+            return;
+        }
 
         waypoints.Sort((x, y) => x.distanceFrom(transform.position).CompareTo(y.distanceFrom(transform.position)));
 
-        distance = WaypointScript.distBetween (waypoints [0], waypoints [1], transform.position);
-		if (distance > 0.5f && distance < 0.55f) {
+        distance = WaypointScript.distBetween(waypoints[0], waypoints[1], transform.position);
+        /*if (distance > 0.5f && distance < 0.55f) {
             if (waypoints[0].id == 0 || waypoints[1].id == 0) {
                 if (primedForLap) {
                     num_laps++;
@@ -265,12 +270,26 @@ public class PlayerCar : MonoBehaviour {
                     print("PRIMED");
                 }
             }
-		}
- 
-        if(furthest_waypoint == null)
+        }*/
+
+        if (!primedForLap)
+        {
+            if (distance > 0.5f && distance < 0.55f)
+            {
+                primedForLap = true;
+            }
+        }
+        else if (furthest_waypoint.id == 0) {
+            primedForLap = false;
+            num_laps++;
+        }
+
+        if (furthest_waypoint == null)
         {
             furthest_waypoint = waypoints[0];
-        }else if(furthest_waypoint != waypoints[0] && distance > waypoints[0].value && waypoints[0].value > furthest_waypoint.value)
+        } else if (waypoints[0] == gc.getWaypoints()[0]) {
+            furthest_waypoint = waypoints[0];
+        } else if (furthest_waypoint != waypoints[0] && distance > waypoints[0].value && waypoints[0].value > furthest_waypoint.value)
         {
             furthest_waypoint = waypoints[0];
         }
