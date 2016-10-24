@@ -39,6 +39,8 @@ public class PlayerCar : MonoBehaviour {
     public static int LAYER_DEFAULT;
     public static int LAYER_SPECTRAL;
 
+    public float thrustPower = 5.0f;
+
     // Use this for initialization
     void Awake () {
         LAYER_DEFAULT = LayerMask.NameToLayer("Default");
@@ -134,7 +136,7 @@ public class PlayerCar : MonoBehaviour {
                     rb.drag = handBrakePower;
                 } else {
                     rb.drag = drag;
-                    rb.AddForce(transform.forward * Input.GetAxis("HLook" + id) * 5 * gc.playerSpeedMultiplier, ForceMode.Acceleration);
+                    rb.AddForce(transform.forward * Input.GetAxis("HLook" + id) * thrustPower * gc.playerSpeedMultiplier, ForceMode.Acceleration);
                     //rb.AddTorque(transform.up * Input.GetAxis("Horizontal"+id) * 1f, ForceMode.Acceleration);
 
                     float h = Vector3.Angle(transform.forward, cam.transform.forward) * 0.05f * Mathf.Abs(Input.GetAxis("HLook" + id));

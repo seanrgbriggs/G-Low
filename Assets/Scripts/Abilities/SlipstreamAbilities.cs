@@ -11,12 +11,16 @@ public class SlipstreamAbilities : PlayerAbilities {
 	GameController gc;
 	Rigidbody rb;
 
+    private float thrustBase;
+
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
 
 		gc = FindObjectOfType<GameController> ();
 		rb = GetComponent<Rigidbody> ();
+
+        thrustBase = GetComponent<PlayerCar>().thrustPower;
 
 	}
 
@@ -60,6 +64,7 @@ public class SlipstreamAbilities : PlayerAbilities {
 			}
 		}
 
-		rb.AddForce (max_boost_power * ult_cd / ult_max * transform.forward, ForceMode.Acceleration);
-	}
+        GetComponent<PlayerCar>().thrustPower = thrustBase + max_boost_power * ult_cd / ult_max;
+        //rb.AddForce (max_boost_power * ult_cd / ult_max * transform.forward, ForceMode.Acceleration);
+    }
 }
