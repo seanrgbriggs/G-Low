@@ -9,13 +9,22 @@ ModelImporter:
     100002: Empty_001
     100004: OLC
     100006: //RootNode
+    100008: Empty_002
+    100010: Empty_003
+    100012: OLC_001
     400000: Empty
     400002: Empty_001
     400004: OLC
     400006: //RootNode
+    400008: Empty_002
+    400010: Empty_003
+    400012: OLC_001
     2300000: OLC
+    2300002: OLC_001
     3300000: OLC
+    3300002: OLC_001
     4300000: OLC
+    4300002: OLC_001
     7400000: Default Take
     9500000: //RootNode
   materials:

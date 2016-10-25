@@ -16,6 +16,7 @@ ModelImporter:
     100016: Track3BottomCurve
     100018: Track3Curve
     100020: Icosphere
+    100022: Cylinder_001
     400000: BezierCurve
     400002: Bottom
     400004: BottomCurve
@@ -27,6 +28,7 @@ ModelImporter:
     400016: Track3BottomCurve
     400018: Track3Curve
     400020: Icosphere
+    400022: Cylinder_001
     2300000: BezierCurve
     2300002: Bottom
     2300004: BottomCurve
@@ -37,6 +39,7 @@ ModelImporter:
     2300014: Track3BottomCurve
     2300016: Track3Curve
     2300018: Icosphere
+    2300020: Cylinder_001
     3300000: BezierCurve
     3300002: Bottom
     3300004: BottomCurve
@@ -47,6 +50,7 @@ ModelImporter:
     3300014: Track3BottomCurve
     3300016: Track3Curve
     3300018: Icosphere
+    3300020: Cylinder_001
     4300000: BottomCurve
     4300002: BezierCurve
     4300004: Bottom
@@ -57,6 +61,7 @@ ModelImporter:
     4300014: Track3BottomCurve
     4300016: Track3Curve
     4300018: Icosphere
+    4300020: Cylinder_001
     7400000: Default Take
     9500000: //RootNode
   materials:
