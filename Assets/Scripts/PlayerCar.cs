@@ -70,7 +70,6 @@ public class PlayerCar : MonoBehaviour {
         furthest_waypoint = gc.getWaypoints()[0];
 
         meshes = GetComponentsInChildren<MeshRenderer>();
-        print(meshes.Length);
         foreach (MeshRenderer mesh in meshes)
         {
             mesh.material = Instantiate(mesh.material);
@@ -206,7 +205,7 @@ public class PlayerCar : MonoBehaviour {
         }
     }
 
-    void Die()
+    public void Die()
     {
         if (canRespawn)
         {
@@ -229,7 +228,8 @@ public class PlayerCar : MonoBehaviour {
         rb.velocity = Vector3.zero;
         transform.position = furthest_waypoint.transform.position;
         transform.rotation = furthest_waypoint.transform.rotation;
-        
+        camAngles = furthest_waypoint.transform.rotation.eulerAngles;
+           
         cur_off_time = 0;
 
         foreach (MeshRenderer mesh in meshes)

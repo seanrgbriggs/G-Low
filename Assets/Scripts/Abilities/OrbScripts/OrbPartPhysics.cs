@@ -30,29 +30,29 @@ public class OrbPartPhysics : MonoBehaviour {
         axis.Normalize();
 
         rb = GetComponent<Rigidbody> ();
- 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+        Color line_base_color = transform.parent.GetComponent<PlayerCar>().base_col;
+        line_base_color *= 0.5f;
+        line_base_color.a *= 0.5f;
+        GetComponent<LineRenderer>().SetColors(line_base_color, Color.white);
+
+    }
+
+    // Update is called once per frame
+    void Update () {
+
 		center = transform.parent.position;
-        //rb.AddTorque (transform.up * 4);
-
-
-
         delta = direction * (min_bounce + Mathf.Sin(Time.time) * bounciness);
 
         transform.position = center + delta;
         transform.RotateAround(center, axis, 15f);
 
-        //transform.localPosition = flattened_radius * new Vector3(Mathf.Sin(init_angle + Time.time), init.y, - Mathf.Cos(init_angle + Time.time));
+        GetComponent<LineRenderer>().SetPosition(1, transform.InverseTransformPoint(transform.parent.position));
+        //GetComponent<LineRenderer>().SetPosition(1, -transform.localPosition);
+        DeathLock(!GetComponent<MeshRenderer>().enabled);
 
-		//delta = (min_bounce + Mathf.Pow(Mathf.PingPong (Time.time, Mathf.Sqrt(bounciness - min_bounce)), 2)) * direction;
 
-		//transform.position = center + delta; //Vector3.Lerp (transform.position, center + delta, 0.05f);
-
-		//transform.RotateAround (center, transform.up, 10f);
-
-	}
+    }
 
     Vector3 RotateDelta(Vector3 delta, float angle) {
         Vector3 temp_delta = delta.normalized * delta.magnitude;
@@ -66,11 +66,22 @@ public class OrbPartPhysics : MonoBehaviour {
     public void SpawnParticles()
     {
         GameObject particles = (GameObject)Instantiate(deathParticles, transform.position, transform.rotation);
+        particles.transform.parent = transform.parent;
         ParticleSystem system = particles.GetComponent<ParticleSystem>();
 
         ParticleSystem.ShapeModule shape = system.shape;
         shape.mesh = GetComponent<MeshFilter>().mesh;
 
         system.startColor = transform.parent.GetComponent<PlayerCar>().base_col;
+    }
+
+    bool lastDeathState = false;
+    void DeathLock(bool dead) {
+        if (dead != lastDeathState) {
+            lastDeathState = dead;
+            if (dead) {
+                SpawnParticles();
+            }
+        }
     }
 }
