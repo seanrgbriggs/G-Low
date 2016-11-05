@@ -23,7 +23,7 @@ public class PlayerCar : MonoBehaviour {
 	GameController gc;
     List<WaypointScript> waypoints;
 
-    Color base_col;
+    public Color base_col { set; get; }
     public float hoverDist = 3.0f;
 
     Vector3 camAngles;
@@ -41,13 +41,19 @@ public class PlayerCar : MonoBehaviour {
 
     public float thrustPower = 5.0f;
 
+    public GameObject deathParticles;
+    public GameObject respawnParticles;
+    private bool canRespawn = true;
+
+    public AudioClip respawnSound;
+    public AudioClip deathSound;
+
     // Use this for initialization
     void Awake () {
         LAYER_DEFAULT = LayerMask.NameToLayer("Default");
         LAYER_SPECTRAL = LayerMask.NameToLayer("Spectral");
 
-        meshes = GetComponentsInChildren<MeshRenderer>();
-        print(meshes.Length);
+
         rb = GetComponent<Rigidbody>();
         abil = GetComponent<PlayerAbilities>();
 
@@ -56,13 +62,41 @@ public class PlayerCar : MonoBehaviour {
 		distance = 0;
 
         gameObject.layer = LAYER_DEFAULT;
-
-        foreach (MeshRenderer mesh in meshes) {
-            mesh.material = Instantiate(mesh.material);
-        }
-        
         
         drag = rb.drag;
+    }
+
+    void Start() {
+        furthest_waypoint = gc.getWaypoints()[0];
+
+        meshes = GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mesh in meshes)
+        {
+            mesh.material = Instantiate(mesh.material);
+        }
+    }
+
+    void SpawnParticles(GameObject prefab)
+    {
+        GameObject particles = (GameObject)Instantiate(prefab, transform.position, transform.rotation);
+        ParticleSystem system = particles.GetComponent<ParticleSystem>();
+
+        ParticleSystem.ShapeModule shape = system.shape;
+        shape.mesh = GetComponent<MeshFilter>().mesh;
+
+        system.startColor = base_col;
+    }
+
+    void SpawnDeathParticles()
+    {
+        foreach (MeshRenderer mesh in meshes)
+        {
+            mesh.enabled = false;
+        }
+
+        rb.isKinematic = true;
+
+        SpawnParticles(deathParticles);
     }
 
     public void ReadyFields()
@@ -100,12 +134,12 @@ public class PlayerCar : MonoBehaviour {
 
             //rb.AddForce(hit.normal * 9.8f * (2.0f - hit.distance));
             //transform.Rotate(Vector3.Cross(transform.up, hit.normal), Mathf.Min(Vector3.Angle(transform.up, hit.normal), 10 * Time.deltaTime), Space.World);
-
+            
 		HandleRaycast ();
         HandleDimming();
 		HandleLapping ();
- 		//GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
-    }
+        //GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
+     }
 
 	void HandleRaycast() {
 		RaycastHit hit;
@@ -154,13 +188,7 @@ public class PlayerCar : MonoBehaviour {
             if (cur_off_time < off_time) {
                 cur_off_time += Time.deltaTime;
             } else {
-                rb.velocity = Vector3.zero;
-                transform.position = furthest_waypoint.transform.position;
-                transform.rotation = furthest_waypoint.transform.rotation;
-                   
-
-                cur_off_time = 0;
-                print(transform.up);
+                Die();
             }
         }else
         {
@@ -168,6 +196,51 @@ public class PlayerCar : MonoBehaviour {
         }
 
 	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.CompareTag("KillYou"))
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        if (canRespawn)
+        {
+            canRespawn = false;
+            SpawnDeathParticles();
+
+            GetComponent<AudioSource>().PlayOneShot(deathSound, 1);
+            Invoke("PlayRezNoise", 0.5f);
+            Invoke("Respawn", 1.5f);
+        }
+    }
+
+    void PlayRezNoise() {
+        GetComponent<AudioSource>().PlayOneShot(respawnSound, 0.25f);
+    }
+
+    void Respawn()
+    {
+        canRespawn = true;
+        rb.velocity = Vector3.zero;
+        transform.position = furthest_waypoint.transform.position;
+        transform.rotation = furthest_waypoint.transform.rotation;
+        camAngles = furthest_waypoint.transform.rotation.eulerAngles;
+           
+        cur_off_time = 0;
+
+        foreach (MeshRenderer mesh in meshes)
+        {
+            mesh.enabled = true;
+        }
+
+        rb.isKinematic = false;
+
+        SpawnParticles(deathParticles);
+    }
 
     void HandleDimming()
     {
@@ -184,16 +257,16 @@ public class PlayerCar : MonoBehaviour {
         }
     }
 
-    void HandleLapping(){
-       
-		if (!onTrack) {
-			return;
-		}
+    void HandleLapping() {
+
+        if (!onTrack) {
+            return;
+        }
 
         waypoints.Sort((x, y) => x.distanceFrom(transform.position).CompareTo(y.distanceFrom(transform.position)));
 
-        distance = WaypointScript.distBetween (waypoints [0], waypoints [1], transform.position);
-		if (distance > 0.5f && distance < 0.55f) {
+        distance = WaypointScript.distBetween(waypoints[0], waypoints[1], transform.position);
+        /*if (distance > 0.5f && distance < 0.55f) {
             if (waypoints[0].id == 0 || waypoints[1].id == 0) {
                 if (primedForLap) {
                     num_laps++;
@@ -207,12 +280,26 @@ public class PlayerCar : MonoBehaviour {
                     print("PRIMED");
                 }
             }
-		}
- 
-        if(furthest_waypoint == null)
+        }*/
+
+        if (!primedForLap)
+        {
+            if (distance > 0.5f && distance < 0.55f)
+            {
+                primedForLap = true;
+            }
+        }
+        else if (furthest_waypoint.id == 0) {
+            primedForLap = false;
+            num_laps++;
+        }
+
+        if (furthest_waypoint == null)
         {
             furthest_waypoint = waypoints[0];
-        }else if(furthest_waypoint != waypoints[0] && distance > waypoints[0].value && waypoints[0].value > furthest_waypoint.value)
+        } else if (waypoints[0] == gc.getWaypoints()[0]) {
+            furthest_waypoint = waypoints[0];
+        } else if (furthest_waypoint != waypoints[0] && distance > waypoints[0].value && waypoints[0].value > furthest_waypoint.value)
         {
             furthest_waypoint = waypoints[0];
         }

@@ -35,15 +35,29 @@ public class WaypointScript : MonoBehaviour{
 	public static float distBetween(WaypointScript w1, WaypointScript w2, Vector3 pos){
 		WaypointScript first;
 		WaypointScript second;
+
 		if (w1.value < w2.value) {
-			first = w1;
+            first = w1;
 			second = w2;
 		} else {
 			first = w2;
 			second = w1;
 		}
 
-		return first.value + (second.value - first.value) * (first.distanceFrom (pos) / (first.distanceFrom (pos) + second.distanceFrom(pos)));
+        float firstval = first.value;
+        float secondval = second.value;
+
+        if (first.value == 0 && second.value > 0.5f)
+        {
+            firstval = secondval;
+            secondval = 1;
+
+            WaypointScript third = first;
+            first = second;
+            second = third;
+        }
+
+		return firstval + (secondval - firstval) * (first.distanceFrom (pos) / (first.distanceFrom (pos) + second.distanceFrom(pos)));
 
 	}
 

@@ -18,6 +18,9 @@ public class GameController : MonoBehaviour {
     public int laps_max;
     public float playerSpeedMultiplier = 1.0f;
 
+    AudioSource aud_src;
+    public AudioClip[] game_music;
+
 
 	void Awake(){
 		omni = FindObjectOfType<OmniController>();
@@ -56,11 +59,25 @@ public class GameController : MonoBehaviour {
         {
             player.ReadyFields();
         }
+        aud_src = GetComponent<AudioSource>();
+
+    }
+
+    void Tunes() {
+        if (aud_src != null)
+        {
+            aud_src.clip = game_music[Random.Range(0, game_music.Length - 1)];
+            aud_src.Play();
+        }
     }
 
     // Update is called once per frame
     void Update () {
         players.Sort (((x, y) => -(x.getLaps() + x.getDistance ()).CompareTo (y.getLaps() + y.getDistance ())));
+        if(aud_src != null && !aud_src.isPlaying)
+        {
+            Tunes();
+        }
 	}
 
 	public WaypointScript[] getWaypoints(){

@@ -1,0 +1,130 @@
+fileFormatVersion: 2
+guid: 520a87bab20295f4faf48fa162555ab2
+timeCreated: 1477338984
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: BezierCurve
+    100002: Bottom
+    100004: BottomCurve
+    100006: NurbsCircle
+    100008: //RootNode
+    100010: Track3
+    100012: Track3Bottom
+    100014: BezierCurve_001
+    100016: Track3BottomCurve
+    100018: Track3Curve
+    100020: Icosphere
+    100022: Cylinder_001
+    400000: BezierCurve
+    400002: Bottom
+    400004: BottomCurve
+    400006: NurbsCircle
+    400008: //RootNode
+    400010: Track3
+    400012: Track3Bottom
+    400014: BezierCurve_001
+    400016: Track3BottomCurve
+    400018: Track3Curve
+    400020: Icosphere
+    400022: Cylinder_001
+    2300000: BezierCurve
+    2300002: Bottom
+    2300004: BottomCurve
+    2300006: NurbsCircle
+    2300008: Track3
+    2300010: Track3Bottom
+    2300012: BezierCurve_001
+    2300014: Track3BottomCurve
+    2300016: Track3Curve
+    2300018: Icosphere
+    2300020: Cylinder_001
+    3300000: BezierCurve
+    3300002: Bottom
+    3300004: BottomCurve
+    3300006: NurbsCircle
+    3300008: Track3
+    3300010: Track3Bottom
+    3300012: BezierCurve_001
+    3300014: Track3BottomCurve
+    3300016: Track3Curve
+    3300018: Icosphere
+    3300020: Cylinder_001
+    4300000: BottomCurve
+    4300002: BezierCurve
+    4300004: Bottom
+    4300006: NurbsCircle
+    4300008: Track3Bottom
+    4300010: Track3
+    4300012: BezierCurve_001
+    4300014: Track3BottomCurve
+    4300016: Track3Curve
+    4300018: Icosphere
+    4300020: Cylinder_001
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
