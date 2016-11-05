@@ -48,6 +48,9 @@ public class PlayerCar : MonoBehaviour {
     public AudioClip respawnSound;
     public AudioClip deathSound;
 
+    private Vector3 startPos;
+    private Quaternion startRot;
+
     // Use this for initialization
     void Awake () {
         LAYER_DEFAULT = LayerMask.NameToLayer("Default");
@@ -74,6 +77,33 @@ public class PlayerCar : MonoBehaviour {
         {
             mesh.material = Instantiate(mesh.material);
         }
+
+        startPos = transform.position;
+        startRot = transform.rotation;
+    }
+
+    public void ResetToStart() {
+        if (IsInvoking("Respawn")) {
+            CancelInvoke("Respawn");
+            Respawn();
+        }
+
+        transform.position = startPos;
+        transform.rotation = startRot;
+
+        camAngles = new Vector3(0, 0, 0);
+        num_laps = 0;
+        primedForLap = false;
+        cur_off_time = 0;
+        onTrack = true;
+        
+        foreach (WaypointScript waypoint in gc.getWaypoints()) {
+            if (waypoint.id == 0) {
+                furthest_waypoint = waypoint;
+            }
+        }
+
+        HandleCamera();
     }
 
     void SpawnParticles(GameObject prefab)
@@ -132,20 +162,19 @@ public class PlayerCar : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-            //rb.AddForce(hit.normal * 9.8f * (2.0f - hit.distance));
-            //transform.Rotate(Vector3.Cross(transform.up, hit.normal), Mathf.Min(Vector3.Angle(transform.up, hit.normal), 10 * Time.deltaTime), Space.World);
-            
+        //rb.AddForce(hit.normal * 9.8f * (2.0f - hit.distance));
+        //transform.Rotate(Vector3.Cross(transform.up, hit.normal), Mathf.Min(Vector3.Angle(transform.up, hit.normal), 10 * Time.deltaTime), Space.World);
+
+        HandleCamera();
 		HandleRaycast ();
         HandleDimming();
 		HandleLapping ();
         //GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
      }
 
-	void HandleRaycast() {
-		RaycastHit hit;
-
+    void HandleCamera() {
         Camera cam = GetComponentInChildren<Camera>();
-        
+
         cam.transform.eulerAngles = camAngles;
         Vector3 v = cam.transform.localEulerAngles;
         v.x = 0;
@@ -158,7 +187,12 @@ public class PlayerCar : MonoBehaviour {
         cam.transform.localPosition = v;
 
         camAngles = cam.transform.eulerAngles;
-        
+    }
+
+	void HandleRaycast() {
+		RaycastHit hit;
+
+        Camera cam = GetComponentInChildren<Camera>();
         foreach (Transform wheel in wheels) {
             onTrack = false;
 			if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f)) {

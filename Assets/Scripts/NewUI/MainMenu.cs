@@ -17,4 +17,8 @@ public class MainMenu : MonoBehaviour {
     public void Play() {
         SceneManager.LoadScene("MapSel", LoadSceneMode.Single);
     }
+
+    public void Tutorial() {
+        SceneManager.LoadScene("tutorial", LoadSceneMode.Single);
+    }
 }

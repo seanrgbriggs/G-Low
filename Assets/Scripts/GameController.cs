@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour {
     public int laps_max;
     public float playerSpeedMultiplier = 1.0f;
 
+    public bool playMusic = true;
+
     AudioSource aud_src;
     public AudioClip[] game_music;
 
@@ -74,9 +76,10 @@ public class GameController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         players.Sort (((x, y) => -(x.getLaps() + x.getDistance ()).CompareTo (y.getLaps() + y.getDistance ())));
-        if(aud_src != null && !aud_src.isPlaying)
-        {
-            Tunes();
+        if (playMusic) {
+            if (aud_src != null && !aud_src.isPlaying) {
+                Tunes();
+            }
         }
 	}
 
