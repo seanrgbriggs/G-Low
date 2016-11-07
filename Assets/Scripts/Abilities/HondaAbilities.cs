@@ -6,6 +6,9 @@ public class HondaAbilities : PlayerAbilities {
 
     public float nitrous_power;
 
+    public Material spectralMat;
+    Material normalMat;
+
     bool is_nitrous;
     bool is_spectral;
     Rigidbody rb;
@@ -14,6 +17,8 @@ public class HondaAbilities : PlayerAbilities {
     {
         base.Start();
         rb = GetComponent<Rigidbody>();
+
+        normalMat = GetComponent<MeshRenderer>().material;
     }
 
 
@@ -56,8 +61,14 @@ public class HondaAbilities : PlayerAbilities {
         if(ult_cd <= 0) {
             ult_cd = -ult_max / 4;
             is_spectral = false;
+            GetComponent<MeshRenderer>().material = normalMat;
             gameObject.layer = PlayerCar.LAYER_DEFAULT;
             return false;
+        }
+
+        if (!is_spectral) {
+
+            GetComponent<MeshRenderer>().material = spectralMat;
         }
 
         is_spectral = true;

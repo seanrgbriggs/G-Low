@@ -67,16 +67,15 @@ public class PlayerCar : MonoBehaviour {
         gameObject.layer = LAYER_DEFAULT;
         
         drag = rb.drag;
+
+        meshes = GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mesh in meshes) {
+            mesh.material = Instantiate(mesh.material);
+        }
     }
 
     void Start() {
         furthest_waypoint = gc.getWaypoints()[0];
-
-        meshes = GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer mesh in meshes)
-        {
-            mesh.material = Instantiate(mesh.material);
-        }
 
         startPos = transform.position;
         startRot = transform.rotation;
