@@ -25,6 +25,8 @@ public class WaypointScript : MonoBehaviour{
         {
             id = 0;
         }
+
+        Destroy(GetComponent<WaypointPlace>());
 	}
 
 

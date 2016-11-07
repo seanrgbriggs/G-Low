@@ -10,11 +10,23 @@ public class UFOAbilities : PlayerAbilities {
     public float magnetize_force;
     public float pulse_force;
 
+    public GameObject pullParticles;
+    public GameObject pushParticles;
+
     GameController gc;
 
     protected override void Start() {
         base.Start();
         gc = FindObjectOfType<GameController>();
+    }
+
+    void SpawnParticles(GameObject prefab) {
+        GameObject obj = Instantiate(prefab);
+        obj.transform.parent = transform;
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity;
+        ParticleSystem particles = obj.GetComponent<ParticleSystem>();
+        particles.startColor = GetComponent<PlayerCar>().base_col;
     }
 
     public override bool UseAbility() //Magnetize
@@ -23,6 +35,8 @@ public class UFOAbilities : PlayerAbilities {
         {
             return false;
         }
+
+        SpawnParticles(pullParticles);
 
         return forceOnPlayersWithin(-magnetize_force);
 
@@ -34,6 +48,8 @@ public class UFOAbilities : PlayerAbilities {
         {
             return false;
         }
+
+        SpawnParticles(pushParticles);
 
         return forceOnPlayersWithin(pulse_force); 
     }
