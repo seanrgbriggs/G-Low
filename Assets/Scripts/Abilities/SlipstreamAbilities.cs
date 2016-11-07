@@ -54,10 +54,10 @@ public class SlipstreamAbilities : PlayerAbilities {
 
 	// Update is called once per frame
 	bool Roll (float power) {
+        power *= FindObjectOfType<GameController>().playerSpeedMultiplier;
 
         ParticleSystem p = SpawnParticles(dashParticles).GetComponent<ParticleSystem>();
         p.startRotation3D = transform.eulerAngles * Mathf.Deg2Rad;
-        p.startSpeed = Mathf.Sign(power) * 20;
 
         rb.AddForce (transform.right * power, ForceMode.VelocityChange);
 		return true;

@@ -53,7 +53,7 @@ public class TutorialController : MonoBehaviour {
     }
 
     void RespawnControl() {
-        playerCar.GetComponent<Rigidbody>().AddForce(Vector3.up * 100, ForceMode.VelocityChange);
+        playerCar.GetComponent<Rigidbody>().AddForce((Vector3.up + Vector3.right) * 300, ForceMode.VelocityChange);
         PlayClip(5);
         Invoke("Objectives", 10.0f);
     }

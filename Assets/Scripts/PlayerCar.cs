@@ -25,6 +25,7 @@ public class PlayerCar : MonoBehaviour {
 
     public Color base_col { set; get; }
     public float hoverDist = 3.0f;
+    public float raycastStart = 3.0f;
 
     Vector3 camAngles;
 
@@ -51,9 +52,11 @@ public class PlayerCar : MonoBehaviour {
     private Vector3 startPos;
     private Quaternion startRot;
 
+    public bool enableGravity = true;
+
     // Use this for initialization
     void Awake () {
-        LAYER_DEFAULT = LayerMask.NameToLayer("Default");
+        LAYER_DEFAULT = LayerMask.NameToLayer("Ignore Raycast");
         LAYER_SPECTRAL = LayerMask.NameToLayer("Spectral");
 
 
@@ -191,12 +194,20 @@ public class PlayerCar : MonoBehaviour {
 	void HandleRaycast() {
 		RaycastHit hit;
 
+        int mask = (1 << LayerMask.NameToLayer("Track")) | (1 << LayerMask.NameToLayer("Default"));
+
         Camera cam = GetComponentInChildren<Camera>();
         foreach (Transform wheel in wheels) {
             onTrack = false;
-			if (Physics.Raycast(wheel.position, -transform.up, out hit, 20.0f)) {
+			if (Physics.Raycast(wheel.position + transform.up * raycastStart, -transform.up, out hit, 50.0f, mask)) {
                 onTrack = true;
-                rb.AddForceAtPosition(hit.normal * 9.8f * (hoverDist - hit.distance) * 0.25f, wheel.position, ForceMode.Acceleration);
+                if (enableGravity) {
+                    float f = 10.0f;
+                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Track")) {
+                        f = 50.0f;
+                    }
+                    rb.AddForceAtPosition(hit.normal * f * (hoverDist - hit.distance + raycastStart) * 0.25f, wheel.position, ForceMode.Acceleration);
+                }
 
 
                 if (Input.GetButton("Brake"+id)) {

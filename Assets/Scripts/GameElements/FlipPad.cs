@@ -11,6 +11,13 @@ public class FlipPad : MonoBehaviour {
         {
             Rigidbody rb = col.GetComponent<Rigidbody>();
             rb.AddForce(transform.up * jump_boost * Mathf.Sqrt(rb.drag / 0.4f), ForceMode.VelocityChange);
+            col.GetComponent<PlayerCar>().enableGravity = false;
+        }
+    }
+
+    void OnTriggerExit(Collider col) {
+        if (col.tag == "Player") {
+            col.GetComponent<PlayerCar>().enableGravity = true;
         }
     }
 

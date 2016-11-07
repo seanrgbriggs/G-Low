@@ -12,11 +12,16 @@ public class ReceivePad : MonoBehaviour {
         {
             Rigidbody rb = col.GetComponent<Rigidbody>();
             rb.AddForce(-transform.up * traction * rb.drag / 0.4f, ForceMode.Acceleration);
+            
+            col.transform.rotation = Quaternion.RotateTowards(col.transform.rotation, transform.rotation, Time.deltaTime * alignment_power);
+            col.GetComponent<PlayerCar>().enableGravity = false;
 
-            if (Vector3.Distance(col.transform.up, transform.up) > 0.5f)
-            {
-                col.transform.rotation = Quaternion.RotateTowards(col.transform.rotation, transform.rotation, Time.deltaTime * alignment_power);
-            }
+        }
+    }
+
+    void OnTriggerExit(Collider col) {
+        if (col.tag == "Player") {
+            col.GetComponent<PlayerCar>().enableGravity = true;
         }
     }
 
