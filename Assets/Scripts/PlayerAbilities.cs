@@ -15,6 +15,17 @@ public abstract class PlayerAbilities : MonoBehaviour {
     protected PlayerCar player;
     protected int id;
 
+    public GameObject SpawnParticles(GameObject prefab) {
+        GameObject obj = Instantiate(prefab);
+        obj.transform.parent = transform;
+        obj.transform.localPosition = Vector3.zero;
+        obj.transform.localRotation = Quaternion.identity;
+        ParticleSystem particles = obj.GetComponent<ParticleSystem>();
+        particles.startColor = GetComponent<PlayerCar>().base_col;
+        particles.startColor *= new Color(1, 1, 1, 0.2f);
+        return obj;
+    }
+
     protected virtual void Start()
     {
         abil_cd = 0;

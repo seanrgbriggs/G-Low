@@ -11,6 +11,8 @@ public class SlipstreamAbilities : PlayerAbilities {
 	GameController gc;
 	Rigidbody rb;
 
+    public GameObject dashParticles;
+
     private float thrustBase;
 
 	// Use this for initialization
@@ -35,7 +37,7 @@ public class SlipstreamAbilities : PlayerAbilities {
 		{
 			return false;
 		}
-
+        
 		return Roll(-roll_power);
 
 	}
@@ -45,14 +47,19 @@ public class SlipstreamAbilities : PlayerAbilities {
 		if (!base.UseAbility())
 		{
 			return false;
-		}
+        }
 
-		return Roll(roll_power); 
+        return Roll(roll_power); 
 	}
 
 	// Update is called once per frame
 	bool Roll (float power) {
-		rb.AddForce (transform.right * power, ForceMode.VelocityChange);
+
+        ParticleSystem p = SpawnParticles(dashParticles).GetComponent<ParticleSystem>();
+        p.startRotation3D = transform.eulerAngles * Mathf.Deg2Rad;
+        p.startSpeed = Mathf.Sign(power) * 20;
+
+        rb.AddForce (transform.right * power, ForceMode.VelocityChange);
 		return true;
 	}
 

@@ -20,15 +20,6 @@ public class UFOAbilities : PlayerAbilities {
         gc = FindObjectOfType<GameController>();
     }
 
-    void SpawnParticles(GameObject prefab) {
-        GameObject obj = Instantiate(prefab);
-        obj.transform.parent = transform;
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.identity;
-        ParticleSystem particles = obj.GetComponent<ParticleSystem>();
-        particles.startColor = GetComponent<PlayerCar>().base_col;
-    }
-
     public override bool UseAbility() //Magnetize
     {
         if (!base.UseAbility())
