@@ -13,6 +13,8 @@ public class SlipstreamAbilities : PlayerAbilities {
 
     public GameObject dashParticles;
 
+    private AudioSource source;
+
     private float thrustBase;
 
 	// Use this for initialization
@@ -23,6 +25,8 @@ public class SlipstreamAbilities : PlayerAbilities {
 		rb = GetComponent<Rigidbody> ();
 
         thrustBase = GetComponent<PlayerCar>().thrustPower;
+
+        source = GetComponents<AudioSource>()[1];
 
 	}
 
@@ -54,6 +58,8 @@ public class SlipstreamAbilities : PlayerAbilities {
 
 	// Update is called once per frame
 	bool Roll (float power) {
+        source.Play();
+
         power *= FindObjectOfType<GameController>().playerSpeedMultiplier;
 
         ParticleSystem p = SpawnParticles(dashParticles).GetComponent<ParticleSystem>();
