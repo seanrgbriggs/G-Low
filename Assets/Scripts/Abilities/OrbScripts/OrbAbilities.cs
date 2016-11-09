@@ -44,7 +44,7 @@ public class OrbAbilities : PlayerAbilities {
 
     public override bool UseAbility()
     {
-        if (!gen.Disable() && !base.UseAbility())
+        if (!gen.Disable() || !base.UseAbility())
         {
             return false;
         }
@@ -81,7 +81,7 @@ public class OrbAbilities : PlayerAbilities {
 
     public override bool UseUltimate()
     {
-        if (!gen.Disable() && !base.UseUltimate())
+        if (!gen.Disable() || !base.UseUltimate())
         {
             return false;
         }

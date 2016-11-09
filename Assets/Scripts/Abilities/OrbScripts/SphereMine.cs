@@ -15,6 +15,7 @@ public class SphereMine : MonoBehaviour {
     Color base_col;
     Light light;
 
+
     void Start() {
         base_col = GetComponent<MeshRenderer>().material.GetColor("_EmissionColor");
         light = GetComponent<Light>();
@@ -37,6 +38,7 @@ public class SphereMine : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider col) {
+        print(col.name);
         if((priming > primeTime) && col.tag == "Player" && !primed)
         {
             //GetComponent<Rigidbody>().AddForce(transform.up * jumpForce, ForceMode.Acceleration);
@@ -47,11 +49,11 @@ public class SphereMine : MonoBehaviour {
 
     void Boom()
     {
-        foreach(RaycastHit hit in Physics.SphereCastAll(transform.position, 25f, -transform.up))
+        foreach(PlayerCar hit in FindObjectsOfType<PlayerCar>())
         {
-            if(hit.transform.tag == "Player")
+            if(Vector3.Distance(hit.transform.position, transform.position) < 25f)
             {
-                hit.transform.GetComponent<PlayerCar>().Die();
+                hit.Die();
             }
         }
         Destroy(gameObject);
