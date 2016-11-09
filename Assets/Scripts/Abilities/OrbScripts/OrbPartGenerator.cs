@@ -38,6 +38,7 @@ public class OrbPartGenerator : MonoBehaviour {
 				delta *= radius;
 				GameObject new_orb_part = (GameObject) Instantiate(part_prefab, transform.position + delta, Quaternion.identity);
 				new_orb_part.transform.SetParent (transform);
+                new_orb_part.GetComponent<Renderer>().material.SetColor("_EmissionColor", GetComponent<PlayerCar>().base_col);
 				newparts.Add (new_orb_part);
                 
 			}
