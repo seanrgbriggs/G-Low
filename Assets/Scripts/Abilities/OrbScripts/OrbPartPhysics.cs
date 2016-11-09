@@ -31,17 +31,14 @@ public class OrbPartPhysics : MonoBehaviour {
 
         rb = GetComponent<Rigidbody> ();
 
-        Color line_base_color = transform.parent.GetComponent<PlayerCar>().base_col;
-        line_base_color *= 0.5f;
-        line_base_color.a *= 0.5f;
-        GetComponent<LineRenderer>().SetColors(line_base_color, Color.white);
+
 
     }
 
     // Update is called once per frame
     void Update () {
 
-		center = transform.parent.position;
+        center = transform.parent.position;
         delta = direction * (min_bounce + Mathf.Sin(Time.time) * bounciness);
 
         transform.position = center + delta;

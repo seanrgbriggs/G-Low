@@ -21,18 +21,9 @@ public class SphereProjectile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, -transform.up, out hit, 20.0f))
-        {
-            //print(hit.transform.name);
-            rb.AddForce(hit.normal * 9.8f * (hoverDist - hit.distance) * 0.25f, ForceMode.Acceleration);
-            rb.AddForce(transform.forward, ForceMode.Acceleration);
-
-            rb.rotation = Quaternion.LookRotation(transform.forward, hit.normal);
-            print(hit.normal + " " + rb.rotation.eulerAngles);
-        }
 
 		if (transform.parent != null) {
+            print(transform.parent.name + " is the parent of " + name);
 			Rigidbody prb = transform.parent.GetComponent<Rigidbody> ();
 			prb.AddForce (-prb.velocity, ForceMode.Acceleration);
 			drag -= Time.deltaTime;

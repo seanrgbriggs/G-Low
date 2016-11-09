@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SphereMine : MonoBehaviour {
 
-    float primeTime = 3.0f;
+    float primeTime = 1.0f;
     float priming = 0.0f;
 
     float jumpForce = 500.0f;

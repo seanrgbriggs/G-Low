@@ -71,10 +71,6 @@ public class PlayerCar : MonoBehaviour {
         
         drag = rb.drag;
 
-        meshes = GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer mesh in meshes) {
-            mesh.material = Instantiate(mesh.material);
-        }
     }
 
     void Start() {
@@ -82,6 +78,8 @@ public class PlayerCar : MonoBehaviour {
 
         startPos = transform.position;
         startRot = transform.rotation;
+        meshes = GetComponentsInChildren<MeshRenderer>();
+
     }
 
     public void ResetToStart() {
