@@ -15,7 +15,7 @@ public class freshbeatsyomang : MonoBehaviour {
 	void Update () {
         string scene_name = SceneManager.GetActiveScene().name;
 
-        bool toDestroy = scene_name != "CharSel" && scene_name != "MapSel";
+        bool toDestroy = scene_name != "CharSel" && scene_name != "MapSel" && scene_name != "Menu2";
         if ((likesSelection && toDestroy) || (!likesSelection && !toDestroy))
         {
             Destroy(this.gameObject);

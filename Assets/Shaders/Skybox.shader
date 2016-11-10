@@ -11,6 +11,8 @@ Properties {
 
 	_Exposure("Exposure", Range(0, 8)) = 1.3
 	[NoScaleOffset] _Tex ("Nebula Cubemap (HDR)", Cube) = "grey" {}
+
+	_TextureMix("Texture Mix", Float) = 0.5
 }
 
 SubShader {
@@ -35,6 +37,7 @@ SubShader {
 		uniform half _SunSize;
 		uniform half3 _SkyTint;
 		uniform half _AtmosphereThickness;
+		uniform float _TextureMix;
 
 	#if defined(UNITY_COLORSPACE_GAMMA)
 		#define GAMMA 2
@@ -382,7 +385,7 @@ SubShader {
 		#endif
 
 			half4 texCol = texCUBE (_Tex, IN.texcoord);
-			col += texCol * 0.5f;
+			col += texCol * _TextureMix;
 
 			return half4(col,1.0);
 

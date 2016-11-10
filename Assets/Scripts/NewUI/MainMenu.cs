@@ -21,4 +21,8 @@ public class MainMenu : MonoBehaviour {
     public void Tutorial() {
         SceneManager.LoadScene("tutorial", LoadSceneMode.Single);
     }
+
+    public void Quit() {
+        Application.Quit();
+    }
 }
