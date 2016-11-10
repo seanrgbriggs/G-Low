@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        UnityEngine.Cursor.visible = false;
 	}
 	
 	// Update is called once per frame

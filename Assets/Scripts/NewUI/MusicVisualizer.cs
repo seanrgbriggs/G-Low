@@ -31,7 +31,7 @@ public class MusicVisualizer : MonoBehaviour {
         source.GetSpectrumData(data, channel, window);
 
         for (int i = 0; i < viewObjects.Length; i++) {
-            float intensity = data[i] * multiplier;
+            float intensity = Mathf.Sqrt(data[i] * multiplier);
 
             Vector3 v = viewObjects[i].localScale;
             v.y = baseline + Mathf.Lerp(v.y, intensity, lerpTime);
