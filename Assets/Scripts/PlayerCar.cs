@@ -169,6 +169,8 @@ public class PlayerCar : MonoBehaviour {
 		HandleRaycast ();
         HandleDimming();
 		HandleLapping ();
+
+        abil.enabled = onTrack;
         //GetComponentInChildren<Camera>().transform.RotateAround(transform.position, transform.up, Input.GetAxis("Mouse X") * Time.deltaTime * 60);
      }
 
